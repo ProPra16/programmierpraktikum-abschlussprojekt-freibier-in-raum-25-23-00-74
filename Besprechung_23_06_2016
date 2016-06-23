@@ -1,0 +1,31 @@
+/* 1. Teambesprechung des Freibierteams. */
+  Schriftführer = Martin;
+
+ Teammitglieder: Lukas, Yannick, Jan und Martin;
+ 
+/* 2. Aufgaben der letzten Woche */
+  - Erstellen eines Gitaccounts und Auseinandersetzung mit Gradle; Status: hat geklappt;
+  - Chillen bis es nicht mehr geht; Status: Nicht geklappt; Ursache: Andere Module fressen auch viel Zeit; Chillbedarf wird ans Ende des Projektes oder in den Ferienwiederholt;
+
+/* 3. Besprechung der Inhalte des Projektes sowie Planung für die kommende Woche */
+
+  Folgende Klassen werden im ersten Überblick benötigt:;
+    -CodeCompilerManager;
+    -XmlLOADERManager;
+    -StateMachineManager;
+    -GuiMainManager;
+    -CodeManager;
+    -TimeManager;
+    
+    ggf. ManagerManager, aber da sind wir uns noch unschlüssig;
+    
+  Als Extrakomponenten des Programmes haben wir uns für 4.1 und 4.2 entschieden; Diese Umsetzung erfolgt jedoch nicht in dieser Woche;
+
+  - Grobes Layout durch Designexperten entworfen(GuiMainManager); Umsetzung von Yannick;
+  - Einlesen von XML(XmlLOADERManager); Umsetzung von Jan;
+  - Gitgroup, Travis und CodeManager; Umsetzung von Lukas;
+  - CodeCompilerManager; Umsetzung Martin;
+  
+  Falls jemand zu schnell oder zu fleißig sein sollte, werden weitere Schritte auch vor dem nächsten Termin besprochen;
+  
+  
