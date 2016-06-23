@@ -3,3 +3,6 @@ apply plugin: "java"
 repositories{
     mavenCentral()
 }
+dependencies{
+    compile 'de.hhu.stups:virtual-kata-lib:1.0.0'
+}
