@@ -12,9 +12,17 @@ public class CodeManager {
         original = code;
     }
 
+    public void nextStep(){
+        original = code;
+    }
+
+    public void reset(){
+        code = original;
+    }
+
     public void toTextArea(TextArea text){
         String content = "";
-        for(String s : original){
+        for(String s : code){
             content+=s+"\n";
         }
         text.setText(content);
