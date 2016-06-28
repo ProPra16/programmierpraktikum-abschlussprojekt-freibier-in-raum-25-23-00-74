@@ -30,4 +30,8 @@ public class Code {
     public boolean compileable(){
         return false;
     }
+
+    public boolean run(){
+        return false;
+    }
 }
