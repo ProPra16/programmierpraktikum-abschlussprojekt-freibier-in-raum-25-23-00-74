@@ -1,15 +1,13 @@
 package CodeManager;
-
-import java.awt.*;
 import java.util.List;
 
 public class CodeManager {
-    private List<String> code;
-    private List<String> original;
+    private Code code;
+    private Code original;
 
     public CodeManager(List<String> code){
-        this.code = code;
-        original = code;
+        this.code = new Code(code);
+        original = new Code(code);
     }
 
     public void nextStep(){
@@ -20,11 +18,7 @@ public class CodeManager {
         code = original;
     }
 
-    public void toTextArea(TextArea text){
-        String content = "";
-        for(String s : code){
-            content+=s+"\n";
-        }
-        text.setText(content);
+    public void compile(){
+
     }
 }
