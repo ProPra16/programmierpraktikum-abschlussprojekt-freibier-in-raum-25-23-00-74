@@ -16,7 +16,7 @@ public class CodeManager {
         code.put("Test",c);
     }
 
-    public boolean passAllTests(){
+    private boolean passAllTests(){
         boolean pass = false;
         for(String key : code.keySet()){
             if(key.equalsIgnoreCase("test")) {
@@ -25,6 +25,39 @@ public class CodeManager {
             }
         }
         return pass;
+    }
+
+    private boolean oneTestfails(){
+        int count = 0;
+        for(String key : code.keySet()){
+            if(key.equalsIgnoreCase("test")) {
+                Code value = code.get(key);
+                if(!value.run()) count++;
+            }
+        }
+        return count==1;
+    }
+
+    private boolean codeCompiles(){
+        boolean compiles = false;
+        for(String key : code.keySet()){
+            if(key.equalsIgnoreCase("code")) {
+                Code value = code.get(key);
+                compiles = value.compileable();
+            }
+        }
+        return compiles;
+    }
+
+    public void fromRedtoGreen(){
+        if(!oneTestfails()||!codeCompiles()){
+            for(String key : code.keySet()){
+                if(key.equalsIgnoreCase("test")) {
+                    Code value = code.get(key);
+                    value.nextStep();
+                }
+            }
+        }
     }
 
 }
