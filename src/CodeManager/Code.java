@@ -5,8 +5,10 @@ import java.util.List;
 
 public class Code {
     List<String> code;
+    List<String> original;
     public Code(List<String> code){
         this.code = code;
+        original = code;
     }
 
     public void toTextArea(TextArea text){
@@ -15,5 +17,17 @@ public class Code {
             content+=s+"\n";
         }
         text.setText(content);
+    }
+
+    public void nextStep(){
+        original = code;
+    }
+
+    public void reset(){
+        code = original;
+    }
+
+    public boolean compileable(){
+        return false;
     }
 }

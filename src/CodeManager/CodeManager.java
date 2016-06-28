@@ -1,24 +1,21 @@
 package CodeManager;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class CodeManager {
-    private Code code;
-    private Code original;
+    private HashMap<String, Code> code;
 
-    public CodeManager(List<String> code){
-        this.code = new Code(code);
-        original = new Code(code);
+    public CodeManager(){
+        code = new HashMap<>();
     }
 
-    public void nextStep(){
-        original = code;
+    public void addCode(Code c){
+        code.put("Code",c);
     }
 
-    public void reset(){
-        code = original;
+    public void addTest(Code c){
+        code.put("Test",c);
     }
 
-    public void compile(){
-
-    }
 }
