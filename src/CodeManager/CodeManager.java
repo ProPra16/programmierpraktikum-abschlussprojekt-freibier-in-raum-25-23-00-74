@@ -49,13 +49,42 @@ public class CodeManager {
         return compiles;
     }
 
-    public void fromRedtoGreen(){
+    public void fromRedToGreen(){
         if(!oneTestfails()||!codeCompiles()){
             for(String key : code.keySet()){
                 if(key.equalsIgnoreCase("test")) {
                     Code value = code.get(key);
                     value.nextStep();
                 }
+            }
+        }
+    }
+
+    public void backToRed(){
+        for(String key : code.keySet()){
+            if(key.equalsIgnoreCase("code")) {
+                Code value = code.get(key);
+                value.reset();
+            }
+        }
+    }
+
+    public void fromGreenToRefactor(){
+        if(passAllTests()&&codeCompiles()){
+            for(String key : code.keySet()){
+                if(key.equalsIgnoreCase("code")) {
+                    Code value = code.get(key);
+                    value.nextStep();
+                }
+            }
+        }
+    }
+
+    public void fromRefactorToRed(){
+        if(passAllTests()&&codeCompiles()){
+            for(String key : code.keySet()){
+                    Code value = code.get(key);
+                    value.nextStep();
             }
         }
     }
