@@ -1,4 +1,3 @@
-package CodeManager;
 import java.util.HashMap;
 
 public class CodeManager {
@@ -21,7 +20,7 @@ public class CodeManager {
         for(String key : code.keySet()){
             if(key.equalsIgnoreCase("test")) {
                 Code value = code.get(key);
-                pass = value.run();
+                pass = value.runable();
             }
         }
         return pass;
@@ -32,7 +31,7 @@ public class CodeManager {
         for(String key : code.keySet()){
             if(key.equalsIgnoreCase("test")) {
                 Code value = code.get(key);
-                if(!value.run()) count++;
+                if(!value.runable()) count++;
             }
         }
         return count==1;

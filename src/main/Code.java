@@ -1,5 +1,3 @@
-package CodeManager;
-
 import java.awt.*;
 import java.util.List;
 
@@ -27,7 +25,7 @@ public class Code {
         return false;
     }
 
-    public boolean run(){
+    public boolean runable(){
         return false;
     }
 }
