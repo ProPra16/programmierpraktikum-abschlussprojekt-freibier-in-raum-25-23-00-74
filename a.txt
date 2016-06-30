@@ -1,0 +1,85 @@
+PS C:\Users\exark\IdeaProjects\Projekt7\test> git clone https://github.com/ProPra16/programmierpraktikum-abschlussprojek
+t-freibier-in-raum-25-23-00-74.git
+Cloning into 'programmierpraktikum-abschlussprojekt-freibier-in-raum-25-23-00-74'...
+remote: Counting objects: 119, done.
+remote: Compressing objects: 100% (68/68), done.
+Receiving objects:  25% (30/119)    111 (delta 33), pack-reused 0
+Receiving objects: 100% (119/119), 13.92 KiB | 0 bytes/s, done.
+Resolving deltas: 100% (41/41), done.
+Checking connectivity... done.
+PS C:\Users\exark\IdeaProjects\Projekt7\test> git init
+Initialized empty Git repository in C:/Users/exark/IdeaProjects/Projekt7/test/.git/
+PS C:\Users\exark\IdeaProjects\Projekt7\test> git pull
+fatal: No remote repository specified.  Please, specify either a URL or a
+remote name from which new revisions should be fetched.
+PS C:\Users\exark\IdeaProjects\Projekt7\test> cd .\programmierpraktikum-abschlussprojekt-freibier-in-raum-25-23-00-74\
+PS C:\Users\exark\IdeaProjects\Projekt7\test\programmierpraktikum-abschlussprojekt-freibier-in-raum-25-23-00-74> git ini
+t
+Reinitialized existing Git repository in C:/Users/exark/IdeaProjects/Projekt7/test/programmierpraktikum-abschlussprojekt
+-freibier-in-raum-25-23-00-74/.git/
+PS C:\Users\exark\IdeaProjects\Projekt7\test\programmierpraktikum-abschlussprojekt-freibier-in-raum-25-23-00-74> git pul
+l
+Already up-to-date.
+PS C:\Users\exark\IdeaProjects\Projekt7\test\programmierpraktikum-abschlussprojekt-freibier-in-raum-25-23-00-74> git che
+ckout -b timemanager
+Switched to a new branch 'timemanager'
+PS C:\Users\exark\IdeaProjects\Projekt7\test\programmierpraktikum-abschlussprojekt-freibier-in-raum-25-23-00-74> git sta
+tus
+On branch timemanager
+nothing to commit, working directory clean
+PS C:\Users\exark\IdeaProjects\Projekt7\test\programmierpraktikum-abschlussprojekt-freibier-in-raum-25-23-00-74> git sta
+tus
+On branch timemanager
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+        a.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+PS C:\Users\exark\IdeaProjects\Projekt7\test\programmierpraktikum-abschlussprojekt-freibier-in-raum-25-23-00-74> git add
+ a.txt
+PS C:\Users\exark\IdeaProjects\Projekt7\test\programmierpraktikum-abschlussprojekt-freibier-in-raum-25-23-00-74> git com
+mit -m "created text file"
+[timemanager 4aa06f2] created text file
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 a.txt
+PS C:\Users\exark\IdeaProjects\Projekt7\test\programmierpraktikum-abschlussprojekt-freibier-in-raum-25-23-00-74> git pus
+h
+fatal: The current branch timemanager has no upstream branch.
+To push the current branch and set the remote as upstream, use
+
+    git push --set-upstream origin timemanager
+
+PS C:\Users\exark\IdeaProjects\Projekt7\test\programmierpraktikum-abschlussprojekt-freibier-in-raum-25-23-00-74> git pus
+h --set-upstream origin timemanager
+Counting objects: 3, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 268 bytes | 0 bytes/s, done.
+Total 3 (delta 1), reused 1 (delta 0)
+To https://github.com/ProPra16/programmierpraktikum-abschlussprojekt-freibier-in-raum-25-23-00-74.git
+ * [new branch]      timemanager -> timemanager
+Branch timemanager set up to track remote branch timemanager from origin.
+PS C:\Users\exark\IdeaProjects\Projekt7\test\programmierpraktikum-abschlussprojekt-freibier-in-raum-25-23-00-74> git che
+ckout master
+Switched to branch 'master'
+Your branch is up-to-date with 'origin/master'.
+PS C:\Users\exark\IdeaProjects\Projekt7\test\programmierpraktikum-abschlussprojekt-freibier-in-raum-25-23-00-74> git bra
+nch
+* master
+  timemanager
+PS C:\Users\exark\IdeaProjects\Projekt7\test\programmierpraktikum-abschlussprojekt-freibier-in-raum-25-23-00-74> git mer
+ge timemanager
+Updating 2b6e3fe..4aa06f2
+Fast-forward
+ a.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 a.txt
+PS C:\Users\exark\IdeaProjects\Projekt7\test\programmierpraktikum-abschlussprojekt-freibier-in-raum-25-23-00-74> git pus
+h
+Total 0 (delta 0), reused 0 (delta 0)
+To https://github.com/ProPra16/programmierpraktikum-abschlussprojekt-freibier-in-raum-25-23-00-74.git
+   2b6e3fe..4aa06f2  master -> master
+PS C:\Users\exark\IdeaProjects\Projekt7\test\programmierpraktikum-abschlussprojekt-freibier-in-raum-25-23-00-74> git add
+ src
+PS C:\Users\exark\IdeaProjects\Projekt7\test\programmierpraktikum-abschlussprojekt-freibier-in-raum-25-23-00-74>
