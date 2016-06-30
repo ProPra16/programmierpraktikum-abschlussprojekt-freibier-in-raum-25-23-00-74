@@ -16,7 +16,11 @@ import java.io.IOException;
  */
 public class XMLManager {
 
-    public static void main(String[] args) throws ParserConfigurationException {
+    String aufgabename;
+    String aufgabenstellung;
+    String klasse;
+
+    public XMLManager() throws ParserConfigurationException {
         DocumentBuilderFactory aufgabeXML = DocumentBuilderFactory.newInstance();
 
         try {
@@ -27,14 +31,17 @@ public class XMLManager {
             Node aufgabe = rootNodes.item(0);
             Element noteElement = (Element) aufgabe;
 
-            Node klassenname = noteElement.getElementsByTagName("klassenname").item(0);
-            Element klassennameElemet = (Element) klassenname;
+            Node aufgabenameNode = noteElement.getElementsByTagName("aufgabename").item(0);
+            Element aufgabenameElemet = (Element) aufgabenameNode;
+            aufgabename = aufgabenameElemet.getTextContent();
 
-            Node aufgabenstellung = noteElement.getElementsByTagName("aufgabenstellung").item(0);
-            Element aufgabenstellungElement = (Element) aufgabenstellung;
+            Node aufgabenstellungNode = noteElement.getElementsByTagName("aufgabenstellung").item(0);
+            Element aufgabenstellungElement = (Element) aufgabenstellungNode;
+            aufgabenstellung = aufgabenstellungElement.getTextContent();
 
-            Node klasse = noteElement.getElementsByTagName("klasse").item(0);
-            Element klasseElement = (Element) klasse;
+            Node klasseNode = noteElement.getElementsByTagName("klasse").item(0);
+            Element klasseElement = (Element) klasseNode;
+            klasse = klasseElement.getTextContent();
         }
         catch (IOException e){
             e.printStackTrace();
@@ -42,8 +49,17 @@ public class XMLManager {
         catch (SAXException e){
             e.printStackTrace();
         }
-
-
     }
 
+    public String getAufgabename(){
+        return aufgabename;
+    }
+
+    public String getAufgabenstellung(){
+        return aufgabenstellung;
+    }
+
+    public String getKlasse(){
+        return klasse;
+    }
 }

@@ -1,5 +1,5 @@
 <aufgabe>
-    <aufgabename>Römische Zahlen</aufgabename>>
+    <aufgabename> Römische Zahlen</aufgabename>>
         <aufgabenstellung>Konvertiert arabische in römische Zahlen.</aufgabenstellung>
         <klassen>
             <klasse>
@@ -7,5 +7,5 @@
                 }
             </klasse>
         </klassen>
-        </aufgabename>
+
 </aufgabe>
