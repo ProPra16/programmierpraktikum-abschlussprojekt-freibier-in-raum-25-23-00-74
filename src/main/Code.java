@@ -2,30 +2,19 @@ import java.awt.*;
 import java.util.List;
 
 public class Code {
-    String code;
-    String original;
-    public Code(String code){
-        this.code = code;
-        original = code;
+    String klasse;
+    String aufgabenstellung;
+
+    public Code(String klasse, String ufgabenstellung){
+        this.klasse = klasse;
+        this.aufgabenstellung = aufgabenstellung;
     }
 
-    public void toTextArea(TextArea text){
-        text.setText(code);
+    public String getKlasse(){
+        return this.klasse;
     }
 
-    public void nextStep(){
-        original = code;
-    }
-
-    public void reset(){
-        code = original;
-    }
-
-    public boolean compileable(){
-        return false;
-    }
-
-    public boolean runable(){
-        return false;
+    public String getAufgabenstellung(){
+        return this.aufgabenstellung;
     }
 }
