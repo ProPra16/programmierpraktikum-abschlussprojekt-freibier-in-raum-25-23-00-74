@@ -1,12 +1,13 @@
-import java.awt.*;
-import java.util.List;
-
 public class Code {
     String klasse;
     String aufgabenstellung;
 
-    public Code(String klasse, String ufgabenstellung){
+
+    public void setKlasse(String Klasse){
         this.klasse = klasse;
+    }
+
+    public void setAufgabenstellung(String aufgabenstellung){
         this.aufgabenstellung = aufgabenstellung;
     }
 
