@@ -16,11 +16,11 @@ import java.io.IOException;
  */
 public class XMLManager {
 
-    String aufgabename;
-    String aufgabenstellung;
-    String klasse;
+    static String aufgabename;
+    static String aufgabenstellung;
+    static String klasse;
 
-    public XMLManager() throws ParserConfigurationException {
+    public static void XMLManager() throws ParserConfigurationException {
         DocumentBuilderFactory aufgabeXML = DocumentBuilderFactory.newInstance();
 
         try {
@@ -51,15 +51,15 @@ public class XMLManager {
         }
     }
 
-    public String getAufgabename(){
+    public static String getAufgabename(){
         return aufgabename;
     }
 
-    public String getAufgabenstellung(){
+    public static String getAufgabenstellung(){
         return aufgabenstellung;
     }
 
-    public String getKlasse(){
+    public static String getKlasse(){
         return klasse;
     }
 }
