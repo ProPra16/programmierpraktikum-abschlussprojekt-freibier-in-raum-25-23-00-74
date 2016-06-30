@@ -1,0 +1,57 @@
+Teambesprechung am 30.06.16
+
+Schriftführer: Yannick
+
+1. Rückblick
+
+- grobes Layout durch Yannick: 	erledigt
+- Recherche zu XML und Java durch Jan:	erledigt
+- Git/Travis initialisieren, CodeManager schreiben durch Lukas: 	erledigt
+- CompileManager schreiben durch Martin:	   erledigt
+- Probleme mit Gradle: 	behoben
+
+2. Problemvermeidung
+
+- mehr Git-/ und Gradle-Tutorials schauen
+
+3. Projekt-Planung
+
+Es gab einige Umbenennungen, neue Namen sind gültig:
+
+=> InterfaceManager (Yannick)
+    - Verwaltet die Textareas in denen der Programmcode und Testcode geschrieben wird
+    - Schreibt in das Consolentextarea
+    - Stellt Methoden wie setCode(string DataName), getCode(...), setTestCode(...), getTestCode(...) bereit für den CodeManager
+
+=> CodeManager (Lukas)
+    - Wird mit dem Augabenskelett aus der XML-Datei initialisiert
+    - Speichert den Anfangszustand des Codes sowie die letzte funktionierende Codeinstanz
+    - Verwaltet mehrere Code- bzw. Testcode-Dateien mit CodeObject-Objekten 
+    - Stellt Methoden wie getCode(string DataName), Update(...) bereit
+
+=> CodeObject (Jan)
+    - Repräsentiert eine Code-Datei (Programmcode wie auch Testcode)
+    - String Code, Aufgabenstellung, Name
+    - Hat get- und set-Methoden
+
+=> CompileManager (Martin)
+    - Compiliert übergebenen Code und führt darauf die Tests aus
+    - Stellt Methoden wie boolean compileCode(...), String getCompileErrors, int getFailedTests, String getTestErrors
+
+=> XMLManager (Jan)
+    - liest die XML-Aufgabendateien ein und extrahiert Code und Einstellungen
+    - gibt den Code zurück
+
+=> StateManager (Lukas)
+     - Wird mit der Anzahl der Code/Test-Dateien initialisiert
+     - Verwaltet aktuellen Programmzustand Coden/Testen/Refactoren
+     - NextStep-Methode geht zum nächsten Zustand über, führt alle wichtigen Schritte aus (compilen oder testen etc.)
+     - Holt den Code vom CodeManager und gibt ihn dem CompileManager (selbes mit Testcode)
+      - führt über den CompileManager die Test aus
+      - gibt Compile- bzw. Testergebnisse an die Console weiter
+
+4. Aufgaben
+
+- Implementierung aller Klassen
+- Fortschritt auf Github eintragen
+
