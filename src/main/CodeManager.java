@@ -3,8 +3,8 @@ import java.util.HashMap;
 public class CodeManager {
     private HashMap<String, Code> code;
     private HashMap<String, Code> codeOriginal;
-    private HashMap<String, Code> test;
-    private HashMap<String, Code> testOriginal;
+    private HashMap<String, String> test;
+    private HashMap<String, String> testOriginal;
 
     public CodeManager(){
         code = new HashMap<>();
@@ -17,23 +17,23 @@ public class CodeManager {
         code.put(name,c);
     }
 
-    public void addTest(Code c, String name){
-        test.put(name,c);
+    public void addTest(String test, String name){
+        this.test.put(name,test);
     }
 
     public Code getCode(String name){
         return code.get(name);
     }
 
-    public Code getTest(String name){
+    public String getTest(String name){
         return test.get(name);
     }
 
-    public void updateCode(String name){
+    public void CodeToNextStep(String name){
         codeOriginal.put(name,code.get(name));
     }
 
-    public void updateTest(String name){
+    public void TestToNextStep(String name){
         testOriginal.put(name,test.get(name));
     }
 
