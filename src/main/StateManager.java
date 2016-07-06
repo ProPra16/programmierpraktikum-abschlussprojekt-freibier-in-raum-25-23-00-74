@@ -18,8 +18,8 @@ public class StateManager {
             cm.addCode(c, c.getDateiname());
             codenames.add(c.getDateiname());
         }
-        cm.addTest("","first Test");
-        testnames.add("first Test");
+        cm.addTest("","firstTest");
+        testnames.add("firstTest");
         printToGUI();
         currentState = "Red";
     }
