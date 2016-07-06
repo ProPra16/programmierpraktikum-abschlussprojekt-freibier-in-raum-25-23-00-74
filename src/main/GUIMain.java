@@ -1,5 +1,3 @@
-package gui;
-
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +8,8 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+
+import java.io.File;
 
 public class GUIMain extends Application
 {
@@ -29,11 +29,12 @@ public class GUIMain extends Application
     public void start(Stage stage) throws Exception
 	{
 		FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(GUIMain.class.getResource("main.fxml"));
+		File f = new File("src/main/main.fxml");
+        loader.setLocation(f.toURI().toURL());
 
         root = loader.load();
 
-        CodeTabPane.equals(loader);
+        //CodeTabPane.equals(loader);
 
 		Scene scene = new Scene(root);
 

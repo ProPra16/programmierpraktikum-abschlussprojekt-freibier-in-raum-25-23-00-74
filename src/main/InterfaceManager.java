@@ -1,5 +1,3 @@
-package gui;
-
 import java.util.HashMap;
 
 import javafx.scene.control.TextArea;
