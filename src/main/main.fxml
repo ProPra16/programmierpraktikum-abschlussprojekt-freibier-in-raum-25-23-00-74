@@ -8,6 +8,8 @@
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="411.0" minWidth="10.0" prefWidth="293.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="477.0" minWidth="10.0" prefWidth="307.0" />
+      <ColumnConstraints />
+      <ColumnConstraints />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints maxHeight="129.0" minHeight="0.0" prefHeight="22.0" vgrow="SOMETIMES" />
@@ -15,7 +17,7 @@
     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <MenuBar GridPane.columnSpan="4">
+      <MenuBar fx:id="MenuBar" GridPane.columnSpan="4">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
@@ -62,10 +64,10 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" text="Done" />
-            <Button disable="true" mnemonicParsing="false" text="Back" GridPane.columnIndex="1" />
+            <Button fx:id="DoneButton" mnemonicParsing="false" text="Done" />
+            <Button fx:id="BackButton" disable="true" mnemonicParsing="false" text="Back" GridPane.columnIndex="1" />
          </children>
       </GridPane>
-      <TextArea GridPane.rowIndex="2" />
+      <TextArea fx:id="Console" GridPane.rowIndex="2" />
    </children>
 </GridPane>

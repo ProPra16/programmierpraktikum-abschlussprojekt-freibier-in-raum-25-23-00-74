@@ -42,5 +42,14 @@ public class InterfaceManager
 	{
 		Console.appendText(message);
 	}
+
+     // Neue Datei mit einbinden
+     public void addTextArea(String name, TextArea item, boolean code)
+     {
+         if(code)
+             Code.put(name, item);
+         else
+             TestCode.put(name, item);
+     }
 	
 }
