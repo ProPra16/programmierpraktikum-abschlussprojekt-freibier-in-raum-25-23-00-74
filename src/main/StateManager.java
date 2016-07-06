@@ -7,6 +7,7 @@ public class StateManager {
     InterfaceManager im;
     List<String> codenames;
     List<String> testnames;
+    String currentState;
 
     public StateManager(Collection<Code> codes, InterfaceManager im){
         codenames = new ArrayList<>();
@@ -20,32 +21,16 @@ public class StateManager {
         cm.addTest("","first Test");
         testnames.add("first Test");
         printToGUI();
+        currentState = "Red";
     }
 
-    public void printToGUI(){
+    private void printToGUI(){
         for(String s : codenames){
             im.setCode(s,cm.getCode(s).getKlasse());
         }
         for(String s : testnames){
             im.setTestCode(s,cm.getTest(s));
         }
-    }
-
-    public void fromRedToGreen(){
-        boolean codeCompiles=true;
-        //Check if any code has compileErrors
-        for(String s : codenames){
-            CompileManager compiler = new CompileManager(s,cm.getCode(s).getKlasse(),false);
-            codeCompiles=compiler.IncludeCompileErrors();
-        }
-        //Check if exactly 1 test fails
-        int count = 0;
-        for(String s : testnames){
-            CompileManager compiler = new CompileManager(s,cm.getTest(s),true);
-            count+=compiler.returnFailedTestsnumber();
-        }
-        boolean oneFailedTest = count == 1;
-        if(!codeCompiles||oneFailedTest) update();
     }
 
     private void update(){
@@ -63,6 +48,37 @@ public class StateManager {
         }
     }
 
+    private void toNextStep(){
+        //Replace backup code with current code
+        for(String s : codenames){
+            cm.CodeToNextStep(s);
+        }
+        for(String s : testnames){
+            cm.TestToNextStep(s);
+        }
+    }
+
+    public void fromRedToGreen(){
+        update();
+        boolean codeCompiles=true;
+        //Check if any code has compileErrors
+        for(String s : codenames){
+            CompileManager compiler = new CompileManager(s,cm.getCode(s).getKlasse(),false);
+            codeCompiles=compiler.IncludeCompileErrors();
+        }
+        //Check if exactly 1 test fails
+        int count = 0;
+        for(String s : testnames){
+            CompileManager compiler = new CompileManager(s,cm.getTest(s),true);
+            count+=compiler.returnFailedTestsnumber();
+        }
+        boolean oneFailedTest = count == 1;
+        if(!codeCompiles||oneFailedTest){
+            toNextStep();
+            currentState = "Green";
+        }
+    }
+
     public void fromGreenToRed(){
         //Reset Code
         for(String s : codenames){
@@ -72,6 +88,7 @@ public class StateManager {
 
     public void fromGreenToRefactor(){
         //Check if all code compiles
+        update();
         int countCompileFailures = 0;
         for(String s : codenames){
             CompileManager compiler = new CompileManager(s,cm.getCode(s).getKlasse(),false);
@@ -85,10 +102,18 @@ public class StateManager {
             testErrors+=compiler.getTestErrors();
         }
         boolean testsRun = testErrors.equals("");
-        if(codeCompiles&&testsRun) update();
+        if(codeCompiles&&testsRun) {
+            toNextStep();
+            if(currentState.equalsIgnoreCase("green")) currentState = "Refactor";
+            else currentState = "Red";
+        }
     }
 
     public void fromRefactorToRed(){
         fromGreenToRefactor();
+    }
+
+    public String getCurrentState(){
+        return currentState;
     }
 }
