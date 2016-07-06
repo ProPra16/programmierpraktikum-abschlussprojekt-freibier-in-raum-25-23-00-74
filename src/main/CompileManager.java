@@ -15,7 +15,7 @@ public class CompileManager {
 
     private String classname;
     private String classContent;
-    private boolean isAtest = true;
+    private boolean isAtest;
     private String solution = "";
     private String testerrors = "";
 
