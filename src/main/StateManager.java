@@ -31,7 +31,7 @@ public class StateManager {
         }
     }
 
-    public void redToGreen(){
+    public void fromRedToGreen(){
         boolean codeCompiles=true;
         //Check if any code has compileErrors
         for(String s : codenames){
@@ -45,21 +45,50 @@ public class StateManager {
             count+=compiler.returnFailedTestsnumber();
         }
         boolean oneFailedTest = count == 1;
-        if(!codeCompiles||oneFailedTest){
-            //Update Code
-            for(String s : codenames){
-                Code c = new Code();
-                c.setDateiname(s);
-                c.setAufgabenstellung(cm.getCode(s).getAufgabenstellung());
-                c.setKlasse(im.getCode(s));
-                cm.addCode(c,s);
-            }
-            //Update Tests
-            for(String s : testnames){
-                cm.addTest(im.getTestCode(s),s);
-            }
+        if(!codeCompiles||oneFailedTest) update();
+    }
+
+    private void update(){
+        //Update Code
+        for(String s : codenames){
+            Code c = new Code();
+            c.setDateiname(s);
+            c.setAufgabenstellung(cm.getCode(s).getAufgabenstellung());
+            c.setKlasse(im.getCode(s));
+            cm.addCode(c,s);
+        }
+        //Update Tests
+        for(String s : testnames){
+            cm.addTest(im.getTestCode(s),s);
         }
     }
 
-    
+    public void fromGreenToRed(){
+        //Reset Code
+        for(String s : codenames){
+            cm.resetCode(s);
+        }
+    }
+
+    public void fromGreenToRefactor(){
+        //Check if all code compiles
+        int countCompileFailures = 0;
+        for(String s : codenames){
+            CompileManager compiler = new CompileManager(s,cm.getCode(s).getKlasse(),false);
+            if(compiler.IncludeCompileErrors()) countCompileFailures++;
+        }
+        boolean codeCompiles = countCompileFailures==0;
+        //Check if all tests work
+        String testErrors = "";
+        for(String s : testnames){
+            CompileManager compiler = new CompileManager(s,cm.getTest(s),true);
+            testErrors+=compiler.getTestErrors();
+        }
+        boolean testsRun = testErrors.equals("");
+        if(codeCompiles&&testsRun) update();
+    }
+
+    public void fromRefactorToRed(){
+        fromGreenToRefactor();
+    }
 }
