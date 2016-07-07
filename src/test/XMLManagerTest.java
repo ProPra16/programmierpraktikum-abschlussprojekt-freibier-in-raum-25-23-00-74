@@ -6,19 +6,19 @@ import static org.junit.Assert.*;
 public class XMLManagerTest {
     @Test
     public void testGetAufgabename() throws Exception {
-        XMLManager.XMLManager();
+        XMLManager.XMLManager("XMLAufgabe");
         assertEquals("Römische Zahlen", XMLManager.getAufgabename());
     }
 
     @Test
     public void testGetAufgabenstellung() throws Exception{
-        XMLManager.XMLManager();
+        XMLManager.XMLManager("XMLAufgabe");
         assertEquals("Konvertiert arabische in römische Zahlen.", XMLManager.getAufgabenstellung());
     }
 
     @Test
     public void testGetKlasse() throws Exception {
-        XMLManager.XMLManager();
+        XMLManager.XMLManager("XMLAufgabe");
         assertEquals("\n" +
                 "                public class RomanNumberConverter {\n" +
                 "                }\n" +
