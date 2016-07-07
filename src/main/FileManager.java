@@ -5,7 +5,7 @@ import java.util.List;
 
 public class FileManager {
     static File f = new File(
-            "Aufgaben/");
+            "src/main/");
     static File[] aufgabenArray = f.listFiles();/* Ein Array aller Dateien im Verzeichnis */
 
     public static List<String> aufgaben(File[] aufgabenArray){
