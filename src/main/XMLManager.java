@@ -20,12 +20,12 @@ public class XMLManager {
     static String aufgabenstellung;
     static String klasse;
 
-    public static void XMLManager() throws ParserConfigurationException {
+    public static void XMLManager(String dateiname) throws ParserConfigurationException {
         DocumentBuilderFactory aufgabeXML = DocumentBuilderFactory.newInstance();
 
         try {
             DocumentBuilder XMLLesen = aufgabeXML.newDocumentBuilder();
-            Document document = XMLLesen.parse(new File("src/main/XMLAufgabe.xml"));
+            Document document = XMLLesen.parse(new File("src/main/"+dateiname+".xml"));
 
             NodeList rootNodes = document.getElementsByTagName("aufgabe");
             Node aufgabe = rootNodes.item(0);
