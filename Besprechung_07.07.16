@@ -1,0 +1,21 @@
+Teambesprechung am 07.07.16
+
+Schriftführer: Jan
+
+1. Rückblick
+-Groben Bestandteile des Programms sind feritg.
+-Es sind keine größeren Probleme aufgetreten
+
+2.Änderungen
+-Wir werden nun doch ATTD, anstatt Tracking umsetzen
+
+3. Aufgaben
+ -Code Klasse wird um einen Konstruktor ergänzt(Jan)
+ -FileManager wird geschrieben um den Import der Aufgaben zu Organisieren(Jan)
+ -Statemanager soll nun dem InterfaceManager Fehler und Ergebnisse übereben, so dass diese an die Konsole übergeben werden können(Lukas)
+ -Außerdem wird schon mal mit der Arbeit an ATTD begonnen(Lukas)
+ -GUI Ausgabe des Filemanagers(Yannick)
+ -Babysteps und Timemanager(Martin)
+
+ Die Dokumentation und das Handbuch sind als Aufgabe noch nicht verteilt. Das werden wir im Laufe der Woche noch verteilen.
+
