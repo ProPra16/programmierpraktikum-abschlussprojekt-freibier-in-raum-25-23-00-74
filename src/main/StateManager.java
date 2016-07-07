@@ -22,6 +22,7 @@ public class StateManager {
         testnames.add("firstTest");
         printToGUI();
         currentState = "Red";
+        im.writeToConsole("Schreiben Sie einen Test der fehlschlaegt!");
     }
 
     private void printToGUI(){
@@ -61,22 +62,27 @@ public class StateManager {
     public void fromRedToGreen(){
         update();
         boolean codeCompiles=true;
+        String consoleResult = "";
         //Check if any code has compileErrors
         for(String s : codenames){
             CompileManager compiler = new CompileManager(s,cm.getCode(s).getKlasse(),false);
             codeCompiles=compiler.IncludeCompileErrors();
+            if(!codeCompiles) consoleResult += compiler.getCompilingErrors();
         }
         //Check if exactly 1 test fails
         int count = 0;
         for(String s : testnames){
             CompileManager compiler = new CompileManager(s,cm.getTest(s),true);
             count+=compiler.returnFailedTestsnumber();
+            consoleResult+=compiler.getTestErrors();
         }
         boolean oneFailedTest = count == 1;
+        if(consoleResult.equals("")) consoleResult = "Alle Tests funktionieren. Schreiben Sie einen Test der nicht funktioniert!";
         if(!codeCompiles||oneFailedTest){
             toNextStep();
             currentState = "Green";
         }
+        im.writeToConsole(consoleResult);
     }
 
     public void fromGreenToRed(){
@@ -84,15 +90,22 @@ public class StateManager {
         for(String s : codenames){
             cm.resetCode(s);
         }
+        printToGUI();
+        currentState = "Red";
+        im.writeToConsole("Schreiben Sie einen Test der fehlschlaegt!");
     }
 
     public void fromGreenToRefactor(){
         //Check if all code compiles
         update();
         int countCompileFailures = 0;
+        String consoleResults = "";
         for(String s : codenames){
             CompileManager compiler = new CompileManager(s,cm.getCode(s).getKlasse(),false);
-            if(compiler.IncludeCompileErrors()) countCompileFailures++;
+            if(compiler.IncludeCompileErrors()){
+                countCompileFailures++;
+                consoleResults+=compiler.getCompilingErrors();
+            }
         }
         boolean codeCompiles = countCompileFailures==0;
         //Check if all tests work
@@ -102,11 +115,20 @@ public class StateManager {
             testErrors+=compiler.getTestErrors();
         }
         boolean testsRun = testErrors.equals("");
+        consoleResults += testErrors;
         if(codeCompiles&&testsRun) {
+            consoleResults = "Alle tests laufen durch!";
             toNextStep();
-            if(currentState.equalsIgnoreCase("green")) currentState = "Refactor";
-            else currentState = "Red";
+            if(currentState.equalsIgnoreCase("green")){
+                currentState = "Refactor";
+                consoleResults += "Sie koennen ihren Code jetzt verbessern!";
+            }
+            else{
+                consoleResults += "Schreiben Sie einen neuen Test der fehlschlaegt!";
+                currentState = "Red";
+            }
         }
+        im.writeToConsole(consoleResults);
     }
 
     public void fromRefactorToRed(){

@@ -59,4 +59,14 @@ public class StateManagerTest {
         sm.fromRefactorToRed();
         assertEquals("Red",sm.getCurrentState());
     }
+
+    @Test
+    public void GreenToRed(){
+        sm = new StateManager(codes, im);
+        when(im.getCode("Aufgabe1")).thenReturn("public class Aufgabe1{\n public static void main(String[] args){\n\n}\n}");
+        when(im.getTestCode("firstTest")).thenReturn("import org.junit.Test;\n import static org.junit.Assert.*;\n public class firstTest{\n @Test\n public void alwaysFalse(){\n assertEquals(true,false);\n} \n}");
+        sm.fromRedToGreen();
+        sm.fromGreenToRed();
+        assertEquals("Red",sm.getCurrentState());
+    }
 }
