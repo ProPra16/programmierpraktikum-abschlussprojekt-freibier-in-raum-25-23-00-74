@@ -3,7 +3,11 @@ public class Code {
     String aufgabenstellung;
     String dateiname;
 
-
+    public Code(String klasse, String aufgabenstellung, String dateiname){
+        this.klasse = klasse;
+        this.aufgabenstellung = aufgabenstellung;
+        this.dateiname = dateiname;
+    }
     public void setKlasse(String klasse){
         this.klasse = klasse;
     }
