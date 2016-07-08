@@ -43,7 +43,7 @@ public class FileManager {
                 //Findet den Node und ändert den Value
                 for (int y = 0; y < rootNodes.getLength(); y++ ) {
                     Node data = rootNodes.item(y);
-                    if ( data.getNodeType() == Node.TEXT_NODE ) {
+                    if ( data.getNodeName() == tagName) {
                         data.setNodeValue(value);
                         return;
                     }
