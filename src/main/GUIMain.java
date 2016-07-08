@@ -96,6 +96,12 @@ public class GUIMain extends Application
             stage.setTitle("ERROR");
 
          stage.setScene(scene);
+         /*stage.setMinWidth(800);
+         stage.setWidth(800);
+         stage.setMinHeight(600);
+         stage.setHeight(600);*/
+
+         stage.setMaximized(true);
 
          stage.show();
      }
@@ -122,7 +128,7 @@ public class GUIMain extends Application
          HashMap<String, TextArea> TestCode = new HashMap<String, TextArea>();
          // Ersten Tab neu initialisieren
          Tab ttab = TestTabPane.getTabs().get(0);
-         ttab.setText(XMLManager.getAufgabename());
+         ttab.setText(XMLManager.getAufgabename() + " Test");
          TestCode.put("firstTest", (TextArea)ttab.getContent().lookup("#tta0"));
 
          interfaceManager = new InterfaceManager(Code, TestCode, Console);
@@ -130,10 +136,7 @@ public class GUIMain extends Application
          // StateManager //
          java.util.Collection<Code> codes = new ArrayList<Code>();
 
-         Code firstC = new Code();
-         firstC.setAufgabenstellung(XMLManager.getAufgabenstellung());
-         firstC.setDateiname(XMLManager.getAufgabename());
-         firstC.setKlasse(XMLManager.getKlasse());
+         Code firstC = new Code(XMLManager.getKlasse(), XMLManager.getAufgabenstellung(), XMLManager.getAufgabename());
          codes.add(firstC);
 
          stateManager = new StateManager(codes, interfaceManager);
@@ -179,7 +182,7 @@ public class GUIMain extends Application
         TabCount--;
     }
 
-    void nextStep() { stateManager.fromRedToGreen(); }
+    void nextStep() { stateManager.toNextStep(); }
 
     void backStep() { stateManager.fromGreenToRed(); }
 
