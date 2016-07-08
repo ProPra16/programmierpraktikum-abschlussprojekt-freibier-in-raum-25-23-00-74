@@ -32,9 +32,15 @@ public class InterfaceManager
 		return TestCode.get(dataName).getText();
 	}
 	
-	public void setTestCode(String dataName, String code)
+	public void setTestCode(String dataName, String code) { TestCode.get(dataName).setText(code); }
+
+	// Entfernen von Datein
+	public void removeCode(String dataName)
 	{
-		TestCode.get(dataName).setText(code);
+		if(Code.containsKey(dataName))
+			Code.remove(dataName);
+		else if(TestCode.containsKey(dataName))
+			TestCode.remove(dataName);
 	}
 	
 	// Zugriff auf die Console

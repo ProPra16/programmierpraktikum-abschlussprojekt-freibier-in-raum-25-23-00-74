@@ -9,6 +9,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.event.*;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.lang.Object;
@@ -27,27 +28,27 @@ public class GUIMain extends Application
 	Parent root;
 
 	// Aus der fxml-Datei gefiltert
-	TabPane CodeTabPane;
+	 TabPane CodeTabPane;
      TabPane TestTabPane;
      TextArea Console;
      Button DoneButton;
      Button BackButton;
      //----------
 
-	public static void main(String[] args)
-	{
+	 public static void main(String[] args)
+	 {
 		// Haupteinstiegspunkt
 		launch(args);
      }
 
-	@Override
+	 @Override
      public void start(Stage stage) throws Exception
      {
          // Versuche Scene aus der fxml zu laden
          try
          {
              FXMLLoader loader = new FXMLLoader();
-             File f = new File("main.fxml");
+             File f = new File("src/main/main.fxml");
              loader.setLocation(f.toURI().toURL());
 
              root = loader.load();
@@ -69,10 +70,19 @@ public class GUIMain extends Application
          //--------------------------------
 
          // GUI-Elemente finalisieren
+         CodeTabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
+         TestTabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
+
          DoneButton.setOnAction(new EventHandler<ActionEvent>()
          {
              @Override
              public void handle(ActionEvent e) { nextStep(); }
+         });
+
+         BackButton.setOnAction(new EventHandler<ActionEvent>()
+         {
+             @Override
+             public void handle(ActionEvent e) { backStep(); }
          });
 
          // Logik initialisieren
@@ -87,52 +97,90 @@ public class GUIMain extends Application
 
          stage.setScene(scene);
 
-         stage.setFullScreen(true);
-
          stage.show();
-      }
+     }
 
      void initializeLogic()
      {
-         // INIT XML
-         //.....
+         // INIT XML //
+         try
+         {
+             XMLManager.XMLManager();
+         }
+         catch (ParserConfigurationException e)
+         {
+             e.printStackTrace();
+         }
 
          // InterfaceManager //
          HashMap<String, TextArea> Code = new HashMap<String, TextArea>();
-         // STUFF TODO...
+         // Ersten Tab neu initialisieren
+         Tab ctab = CodeTabPane.getTabs().get(0);
+         ctab.setText(XMLManager.getAufgabename());
+         Code.put(XMLManager.getAufgabename(), (TextArea)ctab.getContent().lookup("#cta0"));
 
          HashMap<String, TextArea> TestCode = new HashMap<String, TextArea>();
-         // STUFF TODO...
+         // Ersten Tab neu initialisieren
+         Tab ttab = TestTabPane.getTabs().get(0);
+         ttab.setText(XMLManager.getAufgabename());
+         TestCode.put("firstTest", (TextArea)ttab.getContent().lookup("#tta0"));
 
          interfaceManager = new InterfaceManager(Code, TestCode, Console);
 
          // StateManager //
-         Collection<Code> codes = new ArrayList<Code>();
-         // STUFF TODO...
+         java.util.Collection<Code> codes = new ArrayList<Code>();
+
+         Code firstC = new Code();
+         firstC.setAufgabenstellung(XMLManager.getAufgabenstellung());
+         firstC.setDateiname(XMLManager.getAufgabename());
+         firstC.setKlasse(XMLManager.getKlasse());
+         codes.add(firstC);
 
          stateManager = new StateManager(codes, interfaceManager);
      }
 
     // Fügt neuen Code/TestCode Tab hinzu
+    int TabCount = 1;
     void addTab(String fileName, String content, boolean code)
     {
-      TextArea codePanel = new TextArea();
+        TextArea codePanel = new TextArea();
+        String tabId = "";
+        if(code)
+            tabId = "cta" + TabCount;
+        else
+            tabId = "tta" + TabCount;
+        codePanel.setId(tabId);
+        codePanel.setText(content);
 
-      Tab item = new Tab();
-      item.setText(fileName);
-      item.setContent(codePanel);
+        Tab item = new Tab();
+        item.setText(fileName);
+        item.setContent(codePanel);
+        item.setOnClosed(new EventHandler<Event>() {
+            @Override
+            public void handle(Event event) {
+                removeTab(((Tab)event.getSource()).getText());
+            }
+        });
 
-      if(code)
-          CodeTabPane.getTabs().add(item);
-      else
+        if(code)
+           CodeTabPane.getTabs().add(item);
+        else
           TestTabPane.getTabs().add(item);
 
-      interfaceManager.addTextArea(fileName, codePanel, code);
+        interfaceManager.addTextArea(fileName, codePanel, code);
+
+        TabCount++;
     }
 
-    void nextStep()
+    // Eventhandler, entfernt Code/TestCode Tab
+    void removeTab(String fileName)
     {
-        stateManager.nextStep();
+        interfaceManager.removeCode(fileName);
+        TabCount--;
     }
+
+    void nextStep() { stateManager.fromRedToGreen(); }
+
+    void backStep() { stateManager.fromGreenToRed(); }
 
 }
