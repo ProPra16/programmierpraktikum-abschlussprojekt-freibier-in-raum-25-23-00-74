@@ -37,10 +37,7 @@ public class StateManager {
     private void update(){
         //Update Code
         for(String s : codenames){
-            Code c = new Code();
-            c.setDateiname(s);
-            c.setAufgabenstellung(cm.getCode(s).getAufgabenstellung());
-            c.setKlasse(im.getCode(s));
+            Code c = new Code(im.getCode(s),cm.getCode(s).getAufgabenstellung(),s);
             cm.addCode(c,s);
         }
         //Update Tests
@@ -49,7 +46,7 @@ public class StateManager {
         }
     }
 
-    private void toNextStep(){
+    private void replaceBackupCode(){
         //Replace backup code with current code
         for(String s : codenames){
             cm.CodeToNextStep(s);
@@ -59,7 +56,15 @@ public class StateManager {
         }
     }
 
-    public void fromRedToGreen(){
+    public void toNextStep(){
+        switch(currentState){
+            case "Red": fromRedToGreen(); break;
+            case "Green": fromGreenToRefactor(); break;
+            case "Refactor": fromRefactorToRed(); break;
+        }
+    }
+
+    private void fromRedToGreen(){
         update();
         boolean codeCompiles=true;
         String consoleResult = "";
@@ -79,7 +84,7 @@ public class StateManager {
         boolean oneFailedTest = count == 1;
         if(consoleResult.equals("")) consoleResult = "Alle Tests funktionieren. Schreiben Sie einen Test der nicht funktioniert!";
         if(!codeCompiles||oneFailedTest){
-            toNextStep();
+            replaceBackupCode();
             currentState = "Green";
         }
         im.writeToConsole(consoleResult);
@@ -95,7 +100,7 @@ public class StateManager {
         im.writeToConsole("Schreiben Sie einen Test der fehlschlaegt!");
     }
 
-    public void fromGreenToRefactor(){
+    private void fromGreenToRefactor(){
         //Check if all code compiles
         update();
         int countCompileFailures = 0;
@@ -118,7 +123,7 @@ public class StateManager {
         consoleResults += testErrors;
         if(codeCompiles&&testsRun) {
             consoleResults = "Alle tests laufen durch!";
-            toNextStep();
+            replaceBackupCode();
             if(currentState.equalsIgnoreCase("green")){
                 currentState = "Refactor";
                 consoleResults += "Sie koennen ihren Code jetzt verbessern!";
@@ -131,7 +136,7 @@ public class StateManager {
         im.writeToConsole(consoleResults);
     }
 
-    public void fromRefactorToRed(){
+    private void fromRefactorToRed(){
         fromGreenToRefactor();
     }
 
