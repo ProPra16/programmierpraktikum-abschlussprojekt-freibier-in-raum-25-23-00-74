@@ -18,11 +18,12 @@ public class StateManager {
             cm.addCode(c, c.getDateiname());
             codenames.add(c.getDateiname());
         }
-        cm.addTest("","firstTest");
+        cm.addTest("import org.junit.Test;\n" +
+                "import static org.junit.Assert.*;public class firstTest{\n@Test\n public void falset(){assertEquals(true,false);}}","firstTest");
         testnames.add("firstTest");
         printToGUI();
         currentState = "Red";
-        im.writeToConsole("Schreiben Sie einen Test der fehlschlaegt!");
+        im.writeToConsole("Schreiben Sie einen Test der fehlschlaegt!\n");
     }
 
     private void printToGUI(){
@@ -78,6 +79,7 @@ public class StateManager {
         int count = 0;
         for(String s : testnames){
             CompileManager compiler = new CompileManager(s,cm.getTest(s),true);
+            System.out.println(compiler.getCompilingErrors());
             count+=compiler.returnFailedTestsnumber();
             consoleResult+=compiler.getTestErrors();
         }

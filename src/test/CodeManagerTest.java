@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 public class CodeManagerTest {
     @Test
     public void addGetCode(){
-        Code c = new Code();
+        Code c = new Code("Klasse","Aufgabenstellung","Dateiname");
         c.setAufgabenstellung("Aufgabenstellung");
         c.setDateiname("Dateiname");
         c.setKlasse("Klasse");
@@ -24,7 +24,7 @@ public class CodeManagerTest {
 
     @Test
     public void resetCode(){
-        Code c = new Code();
+        Code c = new Code("Klasse","Aufgabenstellung","Dateiname");
         c.setAufgabenstellung("Aufgabenstellung");
         c.setDateiname("Dateiname");
         c.setKlasse("Klasse");
