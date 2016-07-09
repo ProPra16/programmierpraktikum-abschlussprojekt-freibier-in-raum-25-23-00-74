@@ -34,7 +34,7 @@ public class FileManager {
         }
         return aufgaben;
     }
-
+ //Methode  aus den Folien Übung 11
         public static void changeNodeValue(String tagName, String value, String dateiname) throws ParserConfigurationException {
             DocumentBuilderFactory aufgabeXML = DocumentBuilderFactory.newInstance();
             try{
