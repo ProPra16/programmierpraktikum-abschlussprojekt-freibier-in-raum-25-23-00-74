@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 public class FileManagerTest {
     @Test
     public void setNodeValue() throws Exception {
-        FileManager.ändereNodeValue("aufgabename","Testname","FileManagerTest");
+        FileManager.changeNodeValue("aufgabename","Testname","FileManagerTest");
     }
 
 }
