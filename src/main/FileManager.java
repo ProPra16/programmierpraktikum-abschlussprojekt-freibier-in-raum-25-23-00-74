@@ -15,6 +15,11 @@ import org.w3c.dom.Node;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 
 public class FileManager {
@@ -30,7 +35,7 @@ public class FileManager {
         return aufgaben;
     }
 
-        public static void ändereNodeValue(String tagName, String value, String dateiname) throws ParserConfigurationException {
+        public static void changeNodeValue(String tagName, String value, String dateiname) throws ParserConfigurationException {
             DocumentBuilderFactory aufgabeXML = DocumentBuilderFactory.newInstance();
             try{
                 DocumentBuilder XMLLesen = aufgabeXML.newDocumentBuilder();
@@ -40,10 +45,21 @@ public class FileManager {
                 Node aufgabe = rootNodes.item(0);
                 Element noteElement = (Element) aufgabe;
 
-                Node aufgabenameNode = noteElement.getElementsByTagName("aufgabename").item(0);
+                Node aufgabenameNode = noteElement.getElementsByTagName(tagName).item(0);
                 Element aufgabenameElemet = (Element) aufgabenameNode;
-                aufgabenameElemet.setTextContent("Test Test Test");
-            }catch (IOException e){
+                aufgabenameElemet.setTextContent(value);
+
+                TransformerFactory factory =
+                        TransformerFactory.newInstance();
+                Transformer transformer = factory.newTransformer();
+                DOMSource src = new DOMSource(document);
+                StreamResult fileResult = new StreamResult(
+                        new File("src/main/"+dateiname+".xml"));
+                transformer.transform(src, fileResult);
+            }catch(TransformerException e){
+                e.printStackTrace();
+            }
+            catch (IOException e){
                 e.printStackTrace();
             }
             catch (SAXException e){
