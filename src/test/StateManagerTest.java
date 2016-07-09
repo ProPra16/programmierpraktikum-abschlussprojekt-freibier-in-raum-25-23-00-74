@@ -13,10 +13,7 @@ public class StateManagerTest {
     static InterfaceManager im;
     @BeforeClass
     public static void setup(){
-        Code test = new Code();
-        test.setKlasse("public static void main(String[] args){\n\n}");
-        test.setAufgabenstellung("Testaufgabenstellung");
-        test.setDateiname("Aufgabe1");
+        Code test = new Code("public static void main(String[] args){\n\n}","Testaufgabenstellung","Aufgabe1");
         codes = new ArrayList<>();
         codes.add(test);
         im = mock(InterfaceManager.class);
@@ -33,7 +30,7 @@ public class StateManagerTest {
         sm = new StateManager(codes, im);
         when(im.getCode("Aufgabe1")).thenReturn("public class Aufgabe1{\n public static void main(String[] args){\n\n}\n}");
         when(im.getTestCode("firstTest")).thenReturn("import org.junit.Test;\n import static org.junit.Assert.*;\n public class firstTest{\n @Test\n public void alwaysFalse(){\n assertEquals(true,false);\n} \n}");
-        sm.fromRedToGreen();
+        sm.toNextStep();
         assertEquals("Green",sm.getCurrentState());
     }
 
@@ -42,9 +39,9 @@ public class StateManagerTest {
         sm = new StateManager(codes, im);
         when(im.getCode("Aufgabe1")).thenReturn("public class Aufgabe1{\n public static void main(String[] args){\n\n}\n}");
         when(im.getTestCode("firstTest")).thenReturn("import org.junit.Test;\n import static org.junit.Assert.*;\n public class firstTest{\n @Test\n public void alwaysFalse(){\n assertEquals(true,false);\n} \n}");
-        sm.fromRedToGreen();
+        sm.toNextStep();
         when(im.getTestCode("firstTest")).thenReturn("import org.junit.Test;\n import static org.junit.Assert.*;\n public class firstTest{\n @Test\n public void alwaysTrue(){\n assertEquals(true,true);\n} \n}");
-        sm.fromGreenToRefactor();
+        sm.toNextStep();
         assertEquals("Refactor",sm.getCurrentState());
     }
 
@@ -53,10 +50,10 @@ public class StateManagerTest {
         sm = new StateManager(codes, im);
         when(im.getCode("Aufgabe1")).thenReturn("public class Aufgabe1{\n public static void main(String[] args){\n\n}\n}");
         when(im.getTestCode("firstTest")).thenReturn("import org.junit.Test;\n import static org.junit.Assert.*;\n public class firstTest{\n @Test\n public void alwaysFalse(){\n assertEquals(true,false);\n} \n}");
-        sm.fromRedToGreen();
+        sm.toNextStep();
         when(im.getTestCode("firstTest")).thenReturn("import org.junit.Test;\n import static org.junit.Assert.*;\n public class firstTest{\n @Test\n public void alwaysTrue(){\n assertEquals(true,true);\n} \n}");
-        sm.fromGreenToRefactor();
-        sm.fromRefactorToRed();
+        sm.toNextStep();
+        sm.toNextStep();
         assertEquals("Red",sm.getCurrentState());
     }
 
@@ -65,7 +62,7 @@ public class StateManagerTest {
         sm = new StateManager(codes, im);
         when(im.getCode("Aufgabe1")).thenReturn("public class Aufgabe1{\n public static void main(String[] args){\n\n}\n}");
         when(im.getTestCode("firstTest")).thenReturn("import org.junit.Test;\n import static org.junit.Assert.*;\n public class firstTest{\n @Test\n public void alwaysFalse(){\n assertEquals(true,false);\n} \n}");
-        sm.fromRedToGreen();
+        sm.toNextStep();
         sm.fromGreenToRed();
         assertEquals("Red",sm.getCurrentState());
     }
