@@ -10,6 +10,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import org.w3c.dom.Node;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -29,26 +30,19 @@ public class FileManager {
         return aufgaben;
     }
 
-    //Methoden von http://www.drdobbs.com/jvm/creating-and-modifying-xml-in-java/240150782
         public static void ändereNodeValue(String tagName, String value, String dateiname) throws ParserConfigurationException {
             DocumentBuilderFactory aufgabeXML = DocumentBuilderFactory.newInstance();
             try{
                 DocumentBuilder XMLLesen = aufgabeXML.newDocumentBuilder();
                 Document document = XMLLesen.parse(new File("src/main/"+dateiname+".xml"));
+
                 NodeList rootNodes = document.getElementsByTagName("aufgabe");
-                Node root = rootNodes.item(0);
-                if ( root == null )
-                    return;
+                Node aufgabe = rootNodes.item(0);
+                Element noteElement = (Element) aufgabe;
 
-                //Findet den Node und ändert den Value
-                for (int y = 0; y < rootNodes.getLength(); y++ ) {
-                    Node data = rootNodes.item(y);
-                    if ( data.getNodeName() == tagName) {
-                        data.setNodeValue(value);
-                        return;
-                    }
-                }
-
+                Node aufgabenameNode = noteElement.getElementsByTagName("aufgabename").item(0);
+                Element aufgabenameElemet = (Element) aufgabenameNode;
+                aufgabenameElemet.setTextContent("Test Test Test");
             }catch (IOException e){
                 e.printStackTrace();
             }
