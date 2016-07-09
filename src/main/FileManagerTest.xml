@@ -1,5 +1,5 @@
-<aufgabe>
-    <aufgabename>Römische</aufgabename>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><aufgabe>
+    <aufgabename>Testname</aufgabename>
     <aufgabenstellung>Konvertiert arabische in römische Zahlen.</aufgabenstellung>
     <klassen>
         <klasse>
