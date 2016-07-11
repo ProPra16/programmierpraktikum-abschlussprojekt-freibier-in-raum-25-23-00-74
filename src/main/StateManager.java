@@ -78,10 +78,13 @@ public class StateManager {
         //Check if exactly 1 test fails
         int count = 0;
         for(String s : testnames){
-            CompileManager compiler = new CompileManager(s,cm.getTest(s),true);
-            System.out.println(compiler.getCompilingErrors());
-            count+=compiler.returnFailedTestsnumber();
-            consoleResult+=compiler.getTestErrors();
+                CompileManager compiler = new CompileManager(s, cm.getTest(s), true);
+                if(compiler.IncludeCompileErrors()){
+                    consoleResult+=compiler.getCompilingErrors();
+                    continue;
+                }
+                count += compiler.returnFailedTestsnumber();
+                consoleResult += compiler.getTestErrors();
         }
         boolean oneFailedTest = count == 1;
         if(consoleResult.equals("")) consoleResult = "Alle Tests funktionieren. Schreiben Sie einen Test der nicht funktioniert!";
