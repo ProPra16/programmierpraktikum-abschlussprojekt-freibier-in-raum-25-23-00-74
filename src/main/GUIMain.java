@@ -111,7 +111,7 @@ public class GUIMain extends Application
          // INIT XML //
          try
          {
-             XMLManager.XMLManager();
+             XMLManager.XMLManager("XMLAufgabe");
          }
          catch (ParserConfigurationException e)
          {
