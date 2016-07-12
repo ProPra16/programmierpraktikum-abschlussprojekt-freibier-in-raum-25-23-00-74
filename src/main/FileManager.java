@@ -59,17 +59,32 @@ public class FileManager {
         }
     }
 
-    public static void newFile(String dateiname, String inhalt)throws ParserConfigurationException{
+    //Methoden von http://www.mkyong.com/java/how-to-create-xml-file-in-java-dom/
+    public static void newFile(String dateiname, String aufgaben, String aufgabename, String klasseninhalt)throws ParserConfigurationException{
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             Document document = docBuilder.newDocument();
-            Element rootElement = document.createElement("klasse");
+            Element rootElement = document.createElement("aufgabe");
             document.appendChild(rootElement);
 
-            rootElement.setTextContent(inhalt);
-            writeToFile(dateiname, document);
+            Element aufgabenname = document.createElement("aufgabename");
+            rootElement.appendChild(aufgabenname);
+            aufgabenname.setTextContent(aufgabename);
 
+
+            Element aufgabenstellung = document.createElement("aufgabenstellung");
+            rootElement.appendChild(aufgabenstellung);
+            aufgabenstellung.setTextContent(aufgaben);
+
+            Element klassen = document.createElement("klassen");
+            rootElement.appendChild(klassen);
+
+            Element klasse = document.createElement("klasse");
+            klassen.appendChild(klasse);
+            klasse.setTextContent(klasseninhalt);
+
+            writeToFile(dateiname, document);
     }
 
     public static void openFile(String dateiname)throws ParserConfigurationException {
