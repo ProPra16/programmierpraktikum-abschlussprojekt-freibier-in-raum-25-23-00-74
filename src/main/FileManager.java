@@ -107,6 +107,18 @@ public class FileManager {
         }catch(TransformerException e){
             e.printStackTrace();
         }
+    }
+    public static void speichereKlasse(String inhalt, String dateiname){
+        try {
+            File javaFile = new File(dateiname + ".java");
+            FileWriter writer = new FileWriter(javaFile);
+            PrintWriter printer = new PrintWriter(writer);
 
+            printer.print(inhalt);
+            printer.close();
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }
