@@ -30,42 +30,68 @@ public class FileManager {
     public static List<String> aufgaben(File[] aufgabenArray){
         List<String> aufgaben = new ArrayList<>();
         for(File i : aufgabenArray){
-           aufgaben.add(i.toString());
+            aufgaben.add(i.toString());
         }
         return aufgaben;
     }
- //Methode  aus den Folien Übung 11
-        public static void changeNodeValue(String tagName, String value, String dateiname) throws ParserConfigurationException {
-            DocumentBuilderFactory aufgabeXML = DocumentBuilderFactory.newInstance();
-            try{
-                DocumentBuilder XMLLesen = aufgabeXML.newDocumentBuilder();
-                Document document = XMLLesen.parse(new File("src/main/"+dateiname+".xml"));
+    //Methode  aus den Folien Übung 11
+    public static void changeNodeValue(String tagName, String value, String dateiname) throws ParserConfigurationException {
+        DocumentBuilderFactory aufgabeXML = DocumentBuilderFactory.newInstance();
+        try {
+            DocumentBuilder XMLLesen = aufgabeXML.newDocumentBuilder();
+            Document document = XMLLesen.parse(new File("src/main/" + dateiname + ".xml"));
 
-                NodeList rootNodes = document.getElementsByTagName("aufgabe");
-                Node aufgabe = rootNodes.item(0);
-                Element noteElement = (Element) aufgabe;
+            NodeList rootNodes = document.getElementsByTagName("aufgabe");
+            Node aufgabe = rootNodes.item(0);
+            Element noteElement = (Element) aufgabe;
 
-                Node aufgabenameNode = noteElement.getElementsByTagName(tagName).item(0);
-                Element aufgabenameElemet = (Element) aufgabenameNode;
-                aufgabenameElemet.setTextContent(value);
+            Node aufgabenameNode = noteElement.getElementsByTagName(tagName).item(0);
+            Element aufgabenameElemet = (Element) aufgabenameNode;
+            aufgabenameElemet.setTextContent(value);
 
-                TransformerFactory factory =
-                        TransformerFactory.newInstance();
-                Transformer transformer = factory.newTransformer();
-                DOMSource src = new DOMSource(document);
-                StreamResult fileResult = new StreamResult(
-                        new File("src/main/"+dateiname+".xml"));
-                transformer.transform(src, fileResult);
-            }catch(TransformerException e){
-                e.printStackTrace();
-            }
-            catch (IOException e){
-                e.printStackTrace();
-            }
-            catch (SAXException e){
-                e.printStackTrace();
-            }
-
-
+            writeToFile(dateiname, document);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        catch (SAXException e){
+            e.printStackTrace();
         }
     }
+
+    public static void newFile(String dateiname, String inhalt)throws ParserConfigurationException{
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            Document document = docBuilder.newDocument();
+            Element rootElement = document.createElement("klasse");
+            document.appendChild(rootElement);
+
+            rootElement.setTextContent(inhalt);
+            writeToFile(dateiname, document);
+
+    }
+
+    public static void openFile(String dateiname)throws ParserConfigurationException {
+        XMLManager.XMLManager(dateiname);
+    }
+
+    public static void safeFile(String dateiname, String inhalt)throws ParserConfigurationException{
+       changeNodeValue("klasse",inhalt,dateiname);
+    }
+
+    public static void writeToFile(String dateiname, Document document) throws ParserConfigurationException{
+        DocumentBuilderFactory aufgabeXML = DocumentBuilderFactory.newInstance();
+        try{
+            TransformerFactory factory = TransformerFactory.newInstance();
+            Transformer transformer = factory.newTransformer();
+            DOMSource src = new DOMSource(document);
+            StreamResult fileResult = new StreamResult(
+                    new File("src/main/"+dateiname+".xml"));
+            transformer.transform(src, fileResult);
+        }catch(TransformerException e){
+            e.printStackTrace();
+        }
+
+    }
+}
