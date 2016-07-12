@@ -3,6 +3,7 @@ import  javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.stage.FileChooser;
 import javafx.scene.control.*;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -29,10 +30,13 @@ public class GUIMain extends Application
 
     // GUI //
 	Parent root;
+    Stage mainStage;
 
 	// Aus der fxml-Datei gefiltert
 	TabPane CodeTabPane;
+    SingleSelectionModel<Tab> CTabSM;
     TabPane TestTabPane;
+    SingleSelectionModel<Tab> TTabSM;
     TextArea Console;
     Button DoneButton;
     Button BackButton;
@@ -62,6 +66,7 @@ public class GUIMain extends Application
      {
          // Configurations
          Platform.setImplicitExit(true);
+         mainStage = stage;
 
          // Versuche Scene aus der fxml zu laden
          try
@@ -109,6 +114,8 @@ public class GUIMain extends Application
          // GUI-Elemente finalisieren
          CodeTabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
          TestTabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
+         CTabSM = CodeTabPane.getSelectionModel();
+         TTabSM = TestTabPane.getSelectionModel();
 
          // Eventhandler
          initializeEventHandler();
@@ -215,10 +222,14 @@ public class GUIMain extends Application
             }
         });
 
-        if(code)
-           CodeTabPane.getTabs().add(item);
-        else
-          TestTabPane.getTabs().add(item);
+        if(code) {
+            CodeTabPane.getTabs().add(item);
+            CTabSM.select(item);
+        }
+        else {
+            TestTabPane.getTabs().add(item);
+            TTabSM.select(item);
+        }
 
         interfaceManager.addTextArea(fileName, codePanel, code);
 
@@ -254,7 +265,22 @@ public class GUIMain extends Application
 
     void OpenMenuHandler()
     {
-        interfaceManager.writeToConsole("AAAAAAAAAAHHH");
+        // Dialog öffnen
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open XML-File");
+        File file = fileChooser.showOpenDialog(mainStage);
+
+        try
+        {
+            // Datei öffnen
+            FileManager.openFile(file.getName().toString().substring(0, file.getName().toString().indexOf(".")));
+
+            // Neuen Tab generieren
+            addTab(XMLManager.getAufgabename(), XMLManager.getKlasse(), true);
+
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }
     }
 
     void SaveMenuHandler()
