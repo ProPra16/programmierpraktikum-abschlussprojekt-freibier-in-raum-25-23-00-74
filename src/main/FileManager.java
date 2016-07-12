@@ -108,7 +108,7 @@ public class FileManager {
             e.printStackTrace();
         }
     }
-    public static void speichereKlasse(String inhalt, String dateiname){
+    public static void speichereJava(String inhalt, String dateiname){
         try {
             File javaFile = new File(dateiname + ".java");
             FileWriter writer = new FileWriter(javaFile);

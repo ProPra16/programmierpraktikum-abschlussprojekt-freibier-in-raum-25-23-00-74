@@ -24,7 +24,7 @@ public class FileManagerTest {
     }
     @Test
     public void speichereKlasse() throws Exception {
-        FileManager.speichereKlasse("public class RomanNumberConverter {\n" +
+        FileManager.speichereJava("public class RomanNumberConverter {\n" +
                 "            }\n" +
                 "        ", "javaTestFile");
     }
