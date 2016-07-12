@@ -7,11 +7,6 @@ import static org.junit.Assert.*;
  */
 public class FileManagerTest {
     @Test
-    public void setNodeValue() throws Exception {
-        FileManager.changeNodeValue("aufgabename","test test","FileManagerTest");
-    }
-
-    @Test
     public void newFile() throws Exception {
         FileManager.newFile("newFileTest","Römische Zahlen konvertieren", "Römische Zahlen", "public class test{}");
     }
@@ -26,6 +21,12 @@ public class FileManagerTest {
                 "            }\n" +
                 "        ",XMLManager.getKlasse());
 
+    }
+    @Test
+    public void speichereKlasse() throws Exception {
+        FileManager.speichereKlasse("public class RomanNumberConverter {\n" +
+                "            }\n" +
+                "        ", "javaTestFile");
     }
 
 
