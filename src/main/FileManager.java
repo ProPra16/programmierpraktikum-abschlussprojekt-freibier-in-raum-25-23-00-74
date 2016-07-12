@@ -80,7 +80,7 @@ public class FileManager {
        changeNodeValue("klasse",inhalt,dateiname);
     }
 
-    public static void writeToFile(String dateiname, Document document) throws ParserConfigurationException{
+    private static void writeToFile(String dateiname, Document document) throws ParserConfigurationException{
         DocumentBuilderFactory aufgabeXML = DocumentBuilderFactory.newInstance();
         try{
             TransformerFactory factory = TransformerFactory.newInstance();
