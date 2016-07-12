@@ -8,7 +8,25 @@ import static org.junit.Assert.*;
 public class FileManagerTest {
     @Test
     public void setNodeValue() throws Exception {
-        FileManager.changeNodeValue("aufgabename","Testname","FileManagerTest");
+        FileManager.changeNodeValue("aufgabename","test test","FileManagerTest");
     }
+
+    @Test
+    public void newFile() throws Exception {
+        FileManager.newFile("newFileTest","123455");
+    }
+
+    @Test
+    public void openFile() throws Exception {
+        FileManager.openFile("FileManagerTest");
+        assertEquals("test test",XMLManager.getAufgabename());
+        assertEquals("Konvertiert arabische in römische Zahlen.",XMLManager.getAufgabenstellung());
+        assertEquals("\n" +
+                "            public class RomanNumberConverter {\n" +
+                "            }\n" +
+                "        ",XMLManager.getKlasse());
+
+    }
+
 
 }
