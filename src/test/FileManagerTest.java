@@ -13,7 +13,7 @@ public class FileManagerTest {
 
     @Test
     public void newFile() throws Exception {
-        FileManager.newFile("newFileTest","123455");
+        FileManager.newFile("newFileTest","Römische Zahlen konvertieren", "Römische Zahlen", "public class test{}");
     }
 
     @Test
