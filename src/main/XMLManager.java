@@ -10,6 +10,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 /**
  *Methoden von https://www.youtube.com/watch?v=8MJJ7MWX8Qs
@@ -25,7 +26,7 @@ public class XMLManager {
 
         try {
             DocumentBuilder XMLLesen = aufgabeXML.newDocumentBuilder();
-            Document document = XMLLesen.parse(new File("src/main/"+dateiname+".xml"));
+            Document document = XMLLesen.parse((XMLManager.class.getResource("/"+dateiname+".xml").toString()));
 
             NodeList rootNodes = document.getElementsByTagName("aufgabe");
             Node aufgabe = rootNodes.item(0);

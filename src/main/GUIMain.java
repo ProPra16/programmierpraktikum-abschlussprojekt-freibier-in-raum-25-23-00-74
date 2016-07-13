@@ -47,10 +47,7 @@ public class GUIMain extends Application
          // Versuche Scene aus der fxml zu laden
          try
          {
-             FXMLLoader loader = new FXMLLoader();
-             File f = new File("src/main/main.fxml");
-             loader.setLocation(f.toURI().toURL());
-
+             FXMLLoader loader = new FXMLLoader(getClass().getResource("/main.fxml"));
              root = loader.load();
          }
          catch (IOException e)

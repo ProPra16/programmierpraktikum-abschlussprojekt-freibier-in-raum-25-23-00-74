@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><aufgabe>
     <aufgabename>test test</aufgabename>
-    <aufgabenstellung>Konvertiert arabische in römische Zahlen.</aufgabenstellung>
+    <aufgabenstellung>Konvertiert arabische in romische Zahlen.</aufgabenstellung>
     <klassen>
         <klasse>
             public class RomanNumberConverter {
