@@ -26,6 +26,7 @@ public class GUIMain extends Application
     // Logik //
     InterfaceManager interfaceManager;
     StateManager stateManager;
+    String currentFile;
     //------
 
     // GUI //
@@ -175,6 +176,7 @@ public class GUIMain extends Application
 
          Code firstC = new Code(XMLManager.getKlasse(), XMLManager.getAufgabenstellung(), XMLManager.getAufgabename());
          codes.add(firstC);
+         currentFile = firstC.dateiname;
 
          stateManager = new StateManager(codes, interfaceManager);
 
@@ -221,6 +223,12 @@ public class GUIMain extends Application
                 removeTab(((Tab)event.getSource()).getText());
             }
         });
+        item.setOnSelectionChanged(new EventHandler<Event>() {
+            @Override
+            public void handle(Event event) {
+                currentFile = ((Tab)event.getSource()).getText();
+            }
+        });
 
         if(code) {
             CodeTabPane.getTabs().add(item);
@@ -234,6 +242,8 @@ public class GUIMain extends Application
         interfaceManager.addTextArea(fileName, codePanel, code);
 
         TabCount++;
+
+        currentFile = fileName;
     }
 
     void updatePhase()
@@ -285,12 +295,30 @@ public class GUIMain extends Application
 
     void SaveMenuHandler()
     {
-        interfaceManager.writeToConsole("AAAAAAAAAAHHH");
+        try {
+            FileManager.safeFile(currentFile, interfaceManager.getCode(currentFile));
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }
     }
 
     void SaveAsMenuHandler()
     {
-        interfaceManager.writeToConsole("AAAAAAAAAAHHH");
+        // Dialog öffnen
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save XML-File");
+
+        // Extension filter
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        File file = fileChooser.showSaveDialog(mainStage);
+
+        try {
+            FileManager.safeFile(file.getName().toString().substring(0, file.getName().toString().indexOf(".")), interfaceManager.getCode(currentFile));
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }
     }
 
     void CloseMenuHandler()
