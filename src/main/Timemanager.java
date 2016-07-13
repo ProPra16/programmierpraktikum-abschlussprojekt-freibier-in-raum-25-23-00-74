@@ -45,6 +45,10 @@ public class Timemanager {
         CurrentTime.setValue(CurrentTime.getValue() - 1);
     }
 
+    public void ressetCurrentTime(){
+        CurrentTime.setValue(StartTime);
+    }
+
     public void runtime() throws InterruptedException {
         while(CurrentTime.getValue() >= 0){
             Thread.sleep(1000);
