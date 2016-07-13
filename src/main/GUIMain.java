@@ -136,7 +136,7 @@ public class GUIMain extends Application
          Code firstC = new Code(XMLManager.getKlasse(), XMLManager.getAufgabenstellung(), XMLManager.getAufgabename());
          codes.add(firstC);
 
-         stateManager = new StateManager(codes, interfaceManager);
+         stateManager = new StateManager(codes, interfaceManager,false);
      }
 
     // Fügt neuen Code/TestCode Tab hinzu
