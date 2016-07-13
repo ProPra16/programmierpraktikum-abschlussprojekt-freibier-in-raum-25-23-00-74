@@ -1,7 +1,6 @@
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableIntegerValue;
 import javafx.beans.value.ObservableValue;
 
 /**
@@ -15,7 +14,7 @@ public class Timemanager {
 
     }
 
-    public void createListener(){
+    private void createListener(){
        ChangeListener listener = new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
@@ -40,7 +39,7 @@ public class Timemanager {
         return StartTime;
     }
 
-    public void runonestep(){
+    public void runOneStep(){
         // Ausgabe unterhalb dient zu weiteren Testzwecken
         // System.out.println(CurrentTime.intValue());
         CurrentTime.setValue(CurrentTime.getValue() - 1);
@@ -49,7 +48,7 @@ public class Timemanager {
     public void runtime() throws InterruptedException {
         while(CurrentTime.getValue() >= 0){
             Thread.sleep(1000);
-            runonestep();
+            runOneStep();
         }
     }
 
