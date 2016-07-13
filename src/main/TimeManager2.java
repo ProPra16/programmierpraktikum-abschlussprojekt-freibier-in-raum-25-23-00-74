@@ -24,10 +24,6 @@ import javafx.beans.value.ObservableValue;
         public TimeManager2(StateManager existingstate){
             state = existingstate;
         }
-
-        public TimeManager2(){
-        }
-
         public void test(){
 
         }
