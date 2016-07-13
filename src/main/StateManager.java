@@ -105,6 +105,14 @@ public class StateManager {
         im.writeToConsole("Schreiben Sie einen Test der fehlschlaegt!");
     }
 
+    public void resetCodetoStart(){
+        //Reset Code
+        for(String s : codenames){
+            cm.resetCode(s);
+        }
+        printToGUI();
+    }
+
     private void fromGreenToRefactor(){
         //Check if all code compiles
         update();

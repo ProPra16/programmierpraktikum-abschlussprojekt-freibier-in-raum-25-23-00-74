@@ -9,6 +9,7 @@ import javafx.beans.value.ObservableValue;
 public class Timemanager {
     private IntegerProperty CurrentTime = new SimpleIntegerProperty();
     private int StartTime;
+    private  BabystepsManager babe;
 
     public Timemanager(){
 
@@ -45,7 +46,7 @@ public class Timemanager {
         CurrentTime.setValue(CurrentTime.getValue() - 1);
     }
 
-    public void ressetCurrentTime(){
+    public void resetCurrentTime(){
         CurrentTime.setValue(StartTime);
     }
 
