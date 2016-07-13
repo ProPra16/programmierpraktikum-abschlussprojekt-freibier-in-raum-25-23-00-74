@@ -8,6 +8,7 @@ public class StateManager {
     List<String> codenames;
     List<String> testnames;
     String currentState;
+    Boolean isgoingbackwardallwed = false; // Damit Babysteps in der ersten Rot-Phase nicht funktioniert
 
     public StateManager(Collection<Code> codes, InterfaceManager im){
         codenames = new ArrayList<>();
@@ -114,17 +115,11 @@ public class StateManager {
         im.writeToConsole("Sie konnen ihren Code und ihre Tests jetzt verbessern.");
     }
 
-    public void resetCodetoStart(){ //from green to red
-        //Reset Code
-        if(currentState == "green") {
-            fromGreenToRed();
-        }
-        if(currentState == "red"){
+    public void resetCodetoStart(){
+        //Reset Code für babysteps
+        if(currentState.equals("green"))  fromGreenToRed();
+        if(currentState.equals("red"))    fromRedToRefactor();
 
-
-            im.writeToConsole("Schreiben Sie einen Test der fehlschlaegt!");
-        }
-        printToGUI();
     }
 
     private void fromGreenToRefactor(){
