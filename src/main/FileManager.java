@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URISyntaxException;
 import java.text.Format;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,7 @@ public class FileManager {
         DocumentBuilderFactory aufgabeXML = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder XMLLesen = aufgabeXML.newDocumentBuilder();
-            Document document = XMLLesen.parse(new File("src/main/" + dateiname + ".xml"));
+            Document document = XMLLesen.parse((XMLManager.class.getResource("/"+dateiname+".xml").toString()));
 
             NodeList rootNodes = document.getElementsByTagName("aufgabe");
             Node aufgabe = rootNodes.item(0);
@@ -102,7 +103,7 @@ public class FileManager {
             Transformer transformer = factory.newTransformer();
             DOMSource src = new DOMSource(document);
             StreamResult fileResult = new StreamResult(
-                    new File("src/main/"+dateiname+".xml"));
+                    ((XMLManager.class.getResource("/"+dateiname+".xml").toString())));
             transformer.transform(src, fileResult);
         }catch(TransformerException e){
             e.printStackTrace();

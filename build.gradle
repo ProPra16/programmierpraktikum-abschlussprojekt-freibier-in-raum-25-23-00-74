@@ -16,10 +16,21 @@ sourceSets {
         java {
             srcDir 'src/main'
         }
+        resources {
+            srcDir 'src/resources'
+        }
     }
     test {
         java {
             srcDir 'src/test'
         }
     }
+}
+
+jar {
+    manifest { attributes 'Main-Class': 'GUIMain' }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
 }
