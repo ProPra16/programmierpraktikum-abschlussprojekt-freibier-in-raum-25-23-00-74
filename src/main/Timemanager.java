@@ -9,10 +9,10 @@ import javafx.beans.value.ObservableValue;
 public class Timemanager {
     private IntegerProperty CurrentTime = new SimpleIntegerProperty();
     private int StartTime;
-    private  BabystepsManager babe;
+    private StateManager state;
 
-    public Timemanager(){
-
+    public Timemanager(StateManager existingstate){
+        state = existingstate;
     }
 
     private void createListener(){
@@ -20,10 +20,18 @@ public class Timemanager {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
             // Hier muss eingefügt werden, in welchem Feld etwas verändert werden soll
+                if(zeroValueCheck()) state.resetCodetoStart();
+
+
                 System.out.println("Listener hört dir zu");
             }
         };
         CurrentTime.addListener(listener);
+    }
+
+    public boolean zeroValueCheck(){
+        if(CurrentTime.getValue() == 0) return true;
+        return false;
     }
 
     public void setStartTime(int TimeValue){

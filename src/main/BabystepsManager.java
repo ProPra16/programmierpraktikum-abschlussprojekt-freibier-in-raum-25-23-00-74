@@ -1,21 +1,21 @@
 /**
  * Created by Martin on 13.07.2016.
- */
+ */ /*
 public class BabystepsManager {
     StateManager statem;
-    Timemanager timem;
+ //   Timemanager timem;
 
-    public BabystepsManager(StateManager state, Timemanager time){
+    public BabystepsManager(StateManager state){
         statem = state;
-        timem = time;
+ //       timem = time;
     }
     //Nur für Testzwecke, ich weis, ist nicht gut =(
     public BabystepsManager(Timemanager time){
-        timem = time;
+ //       timem = time;
     }
 
     public void run(){
-        if(timeisover() && statem.getCurrentState() != "Refractor")
+        if(statem.getCurrentState() != "Refractor")
             startPhaseagain();
     }
 
@@ -28,4 +28,4 @@ public class BabystepsManager {
             statem.resetCodetoStart();
             timem.resetCurrentTime();
     }
-}
+} */

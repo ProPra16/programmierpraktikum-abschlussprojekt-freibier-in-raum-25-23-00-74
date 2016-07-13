@@ -105,10 +105,15 @@ public class StateManager {
         im.writeToConsole("Schreiben Sie einen Test der fehlschlaegt!");
     }
 
-    public void resetCodetoStart(){
+    public void resetCodetoStart(){ //from green to red
         //Reset Code
-        for(String s : codenames){
-            cm.resetCode(s);
+        if(currentState == "green") {
+            fromGreenToRed();
+        }
+        if(currentState == "red"){
+
+
+            im.writeToConsole("Schreiben Sie einen Test der fehlschlaegt!");
         }
         printToGUI();
     }
