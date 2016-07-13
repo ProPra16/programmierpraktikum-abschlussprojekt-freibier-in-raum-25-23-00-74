@@ -105,6 +105,19 @@ public class StateManager {
         im.writeToConsole("Schreiben Sie einen Test der fehlschlaegt!");
     }
 
+    public void resetCodetoStart(){ //from green to red
+        //Reset Code
+        if(currentState == "green") {
+            fromGreenToRed();
+        }
+        if(currentState == "red"){
+
+
+            im.writeToConsole("Schreiben Sie einen Test der fehlschlaegt!");
+        }
+        printToGUI();
+    }
+
     private void fromGreenToRefactor(){
         //Check if all code compiles
         update();
