@@ -105,6 +105,15 @@ public class StateManager {
         im.writeToConsole("Schreiben Sie einen Test der fehlschlaegt!");
     }
 
+    public void fromRedToRefactor(){
+        for(String s : testnames){
+            cm.resetTest(s);
+        }
+        printToGUI();
+        currentState = "Refactor";
+        im.writeToConsole("Sie konnen ihren Code und ihre Tests jetzt verbessern.");
+    }
+
     public void resetCodetoStart(){ //from green to red
         //Reset Code
         if(currentState == "green") {
