@@ -29,7 +29,7 @@ public class StateManager {
                 "@Test\n" +
                 "public void firstTest(){\n" +
                 "assertEquals(true,true);\n" +
-                "}\n}","Test");
+                "}\n}","Tests");
         testnames.add("Tests");
         cm.addakTest("import org.junit.Test;\n" +
                 "import static org.junit.Assert.*;\n\npublic class AktzeptanzTest{\n\n@Test\npublic void firstTest(){\nassertEquals(true,true);\n}\n}","AktzeptanzTest");
@@ -51,6 +51,7 @@ public class StateManager {
             im.setCode(s,cm.getCode(s).getKlasse());
         }
         for(String s : test){
+            String s1 = cm.getTest(s);
             im.setTestCode(s,cm.getTest(s));
         }
     }
@@ -116,7 +117,7 @@ public class StateManager {
         }
         boolean oneFailedTest = count == 1;
         if(consoleResult.equals("")) consoleResult = "Alle Tests funktionieren. Schreiben Sie einen Test der nicht funktioniert!";
-        if(!codeCompiles||oneFailedTest){
+        if(codeCompiles||oneFailedTest){
             replaceBackupCode();
             currentState = "Green";
         }

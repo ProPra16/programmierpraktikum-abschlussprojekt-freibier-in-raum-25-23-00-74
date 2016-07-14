@@ -85,13 +85,9 @@ public class GUIMain extends Application
          Scene scene = new Scene(root);
 
          // Resourcen laden
-
-         File f = new File("src/main/_CodePhase.png");
-         _CodePhase = new Image(f.toURI().toString());
-         f = new File("src/main/_TestPhase.png");
-         _TestPhase = new Image(f.toURI().toString());
-         f = new File("src/main/_RefPhase.png");
-         _RefPhase = new Image(f.toURI().toString());
+         _CodePhase = new Image(getClass().getResource("/_CodePhase.png").toString());
+         _TestPhase = new Image(getClass().getResource("/_TestPhase.png").toString());
+         _RefPhase = new Image(getClass().getResource("/_RefPhase.png").toString());
 
          // GUI-Elemente aus der fxml filtern
          CodeTabPane = (TabPane)scene.lookup("#CodeTabPane");
@@ -162,7 +158,7 @@ public class GUIMain extends Application
          // Ersten Tab neu initialisieren
          Tab ttab = TestTabPane.getTabs().get(0);
          ttab.setText(XMLManager.getAufgabename() + " Test");
-         TestCode.put("firstTest", (TextArea)ttab.getContent().lookup("#tta0"));
+         TestCode.put("Tests", (TextArea)ttab.getContent().lookup("#tta0"));
 
          interfaceManager = new InterfaceManager(Code, TestCode, Console);
 
@@ -244,9 +240,51 @@ public class GUIMain extends Application
     {
         switch (stateManager.currentState)
         {
-            case "Red": PhaseView.setImage(_CodePhase); break;
-            case "Green": PhaseView.setImage(_TestPhase); break;
-            case "Refactor": PhaseView.setImage(_RefPhase); break;
+            case "Red":
+                PhaseView.setImage(_TestPhase);
+                for(int i = 0; i < CodeTabPane.getTabs().size(); i++)
+                {
+                    Tab t = CodeTabPane.getTabs().get(i);
+                    TextArea ta = (TextArea)t.getContent().lookup("#cta" + i);
+                    ta.setEditable(false);
+                }
+                for(int i = 0; i < TestTabPane.getTabs().size(); i++)
+                {
+                    Tab t = TestTabPane.getTabs().get(i);
+                    TextArea ta = (TextArea)t.getContent().lookup("#tta" + i);
+                    ta.setEditable(true);
+                }
+                break;
+            case "Green":
+                PhaseView.setImage(_CodePhase);
+                for(int i = 0; i < CodeTabPane.getTabs().size(); i++)
+                {
+                    Tab t = CodeTabPane.getTabs().get(i);
+                    TextArea ta = (TextArea)t.getContent().lookup("#cta" + i);
+                    ta.setEditable(true);
+                }
+                for(int i = 0; i < TestTabPane.getTabs().size(); i++)
+                {
+                    Tab t = TestTabPane.getTabs().get(i);
+                    TextArea ta = (TextArea)t.getContent().lookup("#tta" + i);
+                    ta.setEditable(false);
+                }
+                break;
+            case "Refactor":
+                PhaseView.setImage(_RefPhase);
+                for(int i = 0; i < TestTabPane.getTabs().size(); i++)
+                {
+                    Tab t = TestTabPane.getTabs().get(i);
+                    TextArea ta = (TextArea)t.getContent().lookup("#tta");
+                    ta.setEditable(true);
+                }
+                for(int i = 0; i < TestTabPane.getTabs().size(); i++)
+                {
+                    Tab t = TestTabPane.getTabs().get(i);
+                    TextArea ta = (TextArea)t.getContent().lookup("#tta" + i);
+                    ta.setEditable(true);
+                }
+                break;
         }
     }
 
@@ -257,9 +295,15 @@ public class GUIMain extends Application
         TabCount--;
     }
 
-    void nextStep() { stateManager.toNextStep(); }
+    void nextStep() {
+        stateManager.toNextStep();
+        updatePhase();
+    }
 
-    void backStep() { stateManager.fromGreenToRed(); }
+    void backStep() {
+        stateManager.fromGreenToRed();
+        updatePhase();
+    }
 
     // Menu-Eventhandler //
     void NewMenuHandler()
