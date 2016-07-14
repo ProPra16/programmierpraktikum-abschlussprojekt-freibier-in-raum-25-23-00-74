@@ -19,6 +19,7 @@ public class XMLManager {
     static String aufgabename;
     static String aufgabenstellung;
     static String klasse;
+    static String babysteps;
 
     public static void XMLManager(String dateiname) throws ParserConfigurationException {
         DocumentBuilderFactory aufgabeXML = DocumentBuilderFactory.newInstance();
@@ -31,6 +32,10 @@ public class XMLManager {
             Node aufgabe = rootNodes.item(0);
             Element noteElement = (Element) aufgabe;
 
+            Node babystepsNode = noteElement.getElementsByTagName("babysteps").item(0);
+            Element babystepsElement = (Element) babystepsNode;
+            babysteps = babystepsElement.getTextContent();
+
             Node aufgabenameNode = noteElement.getElementsByTagName("aufgabename").item(0);
             Element aufgabenameElemet = (Element) aufgabenameNode;
             aufgabename = aufgabenameElemet.getTextContent();
@@ -42,6 +47,12 @@ public class XMLManager {
             Node klasseNode = noteElement.getElementsByTagName("klasse").item(0);
             Element klasseElement = (Element) klasseNode;
             klasse = klasseElement.getTextContent();
+        }
+        catch (AssertionError e){
+            System.out.println("Leider erfüllt die XML Datei nicht die Anforderungen");
+        }
+        catch (NullPointerException e){
+            System.out.println("Leider erfüllt die XML Datei nicht die Anforderungen");
         }
         catch (IOException e){
             e.printStackTrace();
@@ -62,4 +73,6 @@ public class XMLManager {
     public static String getKlasse(){
         return klasse;
     }
+
+    public static String getBabysteps(){return babysteps;}
 }

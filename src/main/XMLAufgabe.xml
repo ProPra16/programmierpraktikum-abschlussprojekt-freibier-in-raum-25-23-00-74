@@ -1,6 +1,7 @@
 <aufgabe>
     <aufgabename>Römische Zahlen</aufgabename>>
         <aufgabenstellung>Konvertiert arabische in römische Zahlen.</aufgabenstellung>
+        <babysteps>test</babysteps>
         <klassen>
             <klasse>
                 public class RomanNumberConverter {
