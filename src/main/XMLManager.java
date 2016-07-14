@@ -21,6 +21,12 @@ public class XMLManager {
     static String aufgabenstellung;
     static String klasse;
     static String babysteps;
+    static int babystepsTime;
+    static String attd;
+    static String attdInhalt;
+    static String dateiname;
+    static String testName;
+    static String test;
 
     public static void XMLManager(String dateiname) throws ParserConfigurationException {
         DocumentBuilderFactory aufgabeXML = DocumentBuilderFactory.newInstance();
@@ -37,6 +43,30 @@ public class XMLManager {
             Element babystepsElement = (Element) babystepsNode;
             babysteps = babystepsElement.getTextContent();
 
+            Node dateinameNode = noteElement.getElementsByTagName("dateiname").item(0);
+            Element dateinameElement = (Element) dateinameNode;
+            dateiname = dateinameElement.getTextContent();
+
+            Node babystepsTimeNode = noteElement.getElementsByTagName("babystepstime").item(0);
+            Element babystepsTimeElement = (Element) babystepsTimeNode;
+            babystepsTime = Integer.parseInt(babystepsTimeElement.getTextContent());
+
+            Node attdNode = noteElement.getElementsByTagName("attd").item(0);
+            Element attdElement = (Element) attdNode;
+            attd = attdElement.getTextContent();
+
+            Node testNameNode = noteElement.getElementsByTagName("testName").item(0);
+            Element testNameElement = (Element) testNameNode;
+            testName = testNameElement.getTextContent();
+
+            Node testNode = noteElement.getElementsByTagName("attd").item(0);
+            Element testElement = (Element) testNode;
+            testName = testElement.getTextContent();
+
+            Node attdInhaltNode = noteElement.getElementsByTagName("attdInhalt").item(0);
+            Element attdInhaltElement = (Element) attdInhaltNode;
+            aufgabenstellung = attdInhaltElement.getTextContent();
+
             Node aufgabenameNode = noteElement.getElementsByTagName("aufgabename").item(0);
             Element aufgabenameElemet = (Element) aufgabenameNode;
             aufgabename = aufgabenameElemet.getTextContent();
@@ -44,6 +74,8 @@ public class XMLManager {
             Node aufgabenstellungNode = noteElement.getElementsByTagName("aufgabenstellung").item(0);
             Element aufgabenstellungElement = (Element) aufgabenstellungNode;
             aufgabenstellung = aufgabenstellungElement.getTextContent();
+
+
 
             Node klasseNode = noteElement.getElementsByTagName("klasse").item(0);
             Element klasseElement = (Element) klasseNode;
@@ -75,5 +107,29 @@ public class XMLManager {
         return klasse;
     }
 
-    public static String getBabysteps(){return babysteps;}
+    public static boolean getBabysteps(){
+        if(babysteps.equals("true")){
+            return true;
+        }
+        return false;
+    }
+    public static int getBabystepsTime(){
+        return babystepsTime;
+    }
+    public static boolean getAttd(){
+        if(attd.equals("true")){return true;}
+        return false;
+    }
+    public static String getAttdInhalt(){
+        return attdInhalt;
+    }
+    public static String getDateiname(){
+        return dateiname;
+    }
+    public static String getTestName(){
+        return testName;
+    }
+    public static String getTest(){
+        return test;
+    }
 }

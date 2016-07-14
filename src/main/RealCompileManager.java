@@ -30,10 +30,10 @@ public class RealCompileManager {
         compiler = CompilerFactory.getCompiler(cunit,testunit);
         compiler.compileAndRunTests();
         tr = compiler.getTestResult();
+        result = compiler.getCompilerResult();
     }
 
     public boolean compiles(){
-        result = compiler.getCompilerResult();
         if(result.hasCompileErrors()) return false;
         return true;
     }

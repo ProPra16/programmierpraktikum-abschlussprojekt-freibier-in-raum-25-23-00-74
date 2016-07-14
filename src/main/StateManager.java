@@ -5,84 +5,48 @@ import java.util.List;
 public class StateManager {
     CodeManager cm;
     InterfaceManager im;
-    List<String> codenames;
-    List<String> testnames;
-    List<String> akTestnames;
     String currentState;
     Boolean isgoingbackwardallwed = false;
     boolean attd;
 
-    public StateManager(Collection<Code> codes, InterfaceManager im, boolean attd){
-        this.attd=attd;
-        codenames = new ArrayList<>();
-        testnames = new ArrayList<>();
-        akTestnames = new ArrayList<>();
+    public StateManager(Code code, Code test, Code akTest, InterfaceManager im){
         cm = new CodeManager();
-        this.im = im;
-        for(Code c : codes){
-            cm.addCode(c, c.getDateiname());
-            codenames.add(c.getDateiname());
-        }
-        cm.addTest("import org.junit.Test;\n" +
-                "import static org.junit.Assert.*;\n\npublic class Tests{\n" +
-                "\n" +
-                "@Test\n" +
-                "public void firstTest(){\n" +
-                "assertEquals(true,true);\n" +
-                "}\n}","Tests");
-        testnames.add("Tests");
-        cm.addakTest("import org.junit.Test;\n" +
-                "import static org.junit.Assert.*;\n\npublic class AktzeptanzTest{\n\n@Test\npublic void firstTest(){\nassertEquals(true,true);\n}\n}","AktzeptanzTest");
-        akTestnames.add("AktzeptanzTest");
-        if(attd) {
-            printToGUI(codenames, akTestnames);
-            currentState = "ATTD";
-            im.writeToConsole("Schreiben Sie einen Aktzeptanztest der fehlschlaegt!\n");
-        }
-        else {
-            printToGUI(codenames, testnames);
-            currentState = "Red";
-            im.writeToConsole("Schreiben Sie einen Test der fehlschlaegt!\n");
-        }
+        cm.setCode(code);
+        cm.setTest(test);
+        cm.setakTest(akTest);
+        printToGUI(code,akTest);
+        currentState = "ATDD";
     }
 
-    private void printToGUI(List<String> code, List<String> test){
-        for(String s : code){
-            im.setCode(s,cm.getCode(s).getKlasse());
-        }
-        for(String s : test){
-            String s1 = cm.getTest(s);
-            im.setTestCode(s,cm.getTest(s));
-        }
+    public StateManager(Code code, Code test, InterfaceManager im){
+        cm = new CodeManager();
+        cm.setCode(code);
+        cm.setTest(test);
+        printToGUI(code,test);
+        currentState="Red";
+    }
+
+    private void printToGUI(Code code, Code tests){
+            im.setCode(code.getKlasse());
+            im.setTestCode(tests.getKlasse());
     }
 
     private void update(boolean updateATTD){
         //Update Code
-        for(String s : codenames){
-            Code c = new Code(im.getCode(s),cm.getCode(s).getAufgabenstellung(),s);
-            cm.addCode(c,s);
-        }
+        cm.updateCode(im.getCode());
         //Update Tests
         if(updateATTD){
-            for(String s : akTestnames){
-                cm.addakTest(im.getTestCode(s),s);
-            }
+            cm.updateakTest(im.getTestCode());
         }
         else {
-            for(String s : testnames){
-                cm.addTest(im.getTestCode(s),s);
-            }
+            cm.updateTest(im.getTestCode());
         }
     }
 
     private void replaceBackupCode(){
         //Replace backup code with current code
-        for(String s : codenames){
-            cm.CodeToNextStep(s);
-        }
-        for(String s : testnames){
-            cm.TestToNextStep(s);
-        }
+        cm.CodeToNextStep();
+        cm.TestToNextStep();
     }
 
     public void toNextStep(){
@@ -96,114 +60,73 @@ public class StateManager {
 
     private void fromRedToGreen(){
         update(false);
-        boolean codeCompiles=true;
-        String consoleResult = "";
-        //Check if any code has compileErrors
-        for(String s : codenames){
-            CompileManager compiler = new CompileManager(s,cm.getCode(s).getKlasse(),false);
-            codeCompiles=compiler.IncludeCompileErrors();
-            if(!codeCompiles) consoleResult += compiler.getCompilingErrors();
-        }
-        //Check if exactly 1 test fails
-        int count = 0;
-        for(String s : testnames){
-                CompileManager compiler = new CompileManager(s, cm.getTest(s), true);
-                if(compiler.IncludeCompileErrors()){
-                    consoleResult+=compiler.getCompilingErrors();
-                    continue;
-                }
-                count += compiler.returnFailedTestsnumber();
-                consoleResult += compiler.getTestErrors();
-        }
-        boolean oneFailedTest = count == 1;
-        if(consoleResult.equals("")) consoleResult = "Alle Tests funktionieren. Schreiben Sie einen Test der nicht funktioniert!";
-        if(codeCompiles||oneFailedTest){
+        RealCompileManager compiler = new RealCompileManager(cm.getCode(),cm.getTest().getDateiname(),cm.getTest().getKlasse());
+        compiler.runCompiler();
+        if(!compiler.compiles()||compiler.getNumberOfFailedTests()==1){
             replaceBackupCode();
             currentState = "Green";
         }
-        im.writeToConsole(consoleResult);
+        else{
+            im.writeToConsole(compiler.getCompileErrors());
+            im.writeToConsole(compiler.getTestErrors());
+        }
     }
 
     public void fromGreenToRed(){
         //Reset Code
-        for(String s : codenames){
-            cm.resetCode(s);
-        }
-        printToGUI(codenames,testnames);
+        cm.resetCode();
+        printToGUI(cm.getCode(),cm.getTest());
         currentState = "Red";
-        im.writeToConsole("Schreiben Sie einen Test der fehlschlaegt!");
     }
 
     public void fromRedToRefactor(){
-        for(String s : testnames){
-            cm.resetTest(s);
-        }
-        printToGUI(codenames,testnames);
+        cm.resetTest();
+        printToGUI(cm.getCode(),cm.getTest());
         currentState = "Refactor";
-        im.writeToConsole("Sie konnen ihren Code und ihre Tests jetzt verbessern.");
     }
 
     public void resetCodetoStart(){
         //Reset Code für babysteps
         if(currentState.equals("green"))  fromGreenToRed();
         if(currentState.equals("red"))    fromRedToRefactor();
-
     }
 
     private void codeAndTestsWorkToNextPhase(){
         //Check if all code compiles
         update(false);
-        int countCompileFailures = 0;
-        String consoleResults = "";
-        for(String s : codenames){
-            CompileManager compiler = new CompileManager(s,cm.getCode(s).getKlasse(),false);
-            if(compiler.IncludeCompileErrors()){
-                countCompileFailures++;
-                consoleResults+=compiler.getCompilingErrors();
-            }
-        }
-        boolean codeCompiles = countCompileFailures==0;
-        //Check if all tests work
-        String testErrors = "";
-        for(String s : testnames){
-            CompileManager compiler = new CompileManager(s,cm.getTest(s),true);
-            testErrors+=compiler.getTestErrors();
-        }
-        boolean testsRun = testErrors.equals("");
-        consoleResults += testErrors;
-        if(codeCompiles&&testsRun) {
-            consoleResults = "Alle tests laufen durch und ihr Code kompiliert!";
+        RealCompileManager compiler = new RealCompileManager(cm.getCode(),cm.getTest().getDateiname(),cm.getTest().getKlasse());
+        compiler.runCompiler();
+        if(compiler.compiles()&&compiler.getNumberOfFailedTests()==0) {
             replaceBackupCode();
             if(currentState.equalsIgnoreCase("green")){
                 currentState = "Refactor";
-                consoleResults += "Sie koennen ihren Code jetzt verbessern!";
             }
             else if(currentState.equalsIgnoreCase("refactor")&&attd){
                 currentState = "ATTD";
-                printToGUI(codenames,akTestnames);
+                printToGUI(cm.getCode(),cm.getakTest());
                 fromATTDtoRed();
             }
             else{
-                consoleResults += "Schreiben Sie einen neuen Test der fehlschlaegt!";
                 currentState = "Red";
             }
         }
-        im.writeToConsole(consoleResults);
+        else{
+            im.writeToConsole(compiler.getCompileErrors());
+            im.writeToConsole(compiler.getTestErrors());
+        }
     }
 
     public void fromATTDtoRed(){
         update(true);
-        for(String s : akTestnames){
-            CompileManager compiler = new CompileManager(s,cm.getakTest(s),true);
-            if(!compiler.IncludeCompileErrors()){
-                if(compiler.returnFailedTestsnumber()==0) im.writeToConsole("Der Aktzeptanztest ist erfullt. Schreiben Sie einen neuen!");
-                else if(compiler.returnFailedTestsnumber()!=1) im.writeToConsole("Mehr als ein Aktzeptanztest schlagt fehl. Es darf nur ein Aktzeptanztest fehlschlagen!");
-                else{
-                    im.writeToConsole(compiler.getTestErrors());
+            RealCompileManager compiler = new RealCompileManager(cm.getCode(),cm.getakTest().getDateiname(),cm.getakTest().getKlasse());
+            if(compiler.compiles()){
+                if(compiler.getNumberOfFailedTests()==1){
                     currentState="Red";
-                    im.writeToConsole("Schreiben Sie einen Unittest der fehlschlagt.");
-                    printToGUI(codenames,testnames);
+                    printToGUI(cm.getCode(),cm.getTest());
                 }
+                else{
+                    im.writeToConsole(compiler.getCompileErrors());
+                    im.writeToConsole(compiler.getTestErrors());
             }
         }
     }

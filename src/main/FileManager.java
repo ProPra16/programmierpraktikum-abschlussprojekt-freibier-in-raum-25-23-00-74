@@ -92,8 +92,15 @@ public class FileManager {
         XMLManager.XMLManager(dateiname);
     }
 
-    public static void safeFile(String dateiname, String inhalt)throws ParserConfigurationException{
-       changeNodeValue("klasse",inhalt,dateiname);
+    public static void safeFile(String dateiname, String inhalt, String tests, String attdInhalt)throws ParserConfigurationException{
+        changeNodeValue("klasse",inhalt,dateiname);
+        changeNodeValue("tests",tests,dateiname);
+        changeNodeValue("attdInhalt", attdInhalt, dateiname);
+    }
+
+    public static void safeFileOhneAttd(String dateiname, String inhalt, String tests)throws ParserConfigurationException{
+        changeNodeValue("klasse",inhalt,dateiname);
+        changeNodeValue("tests",tests,dateiname);
     }
 
     private static void writeToFile(String dateiname, Document document) throws ParserConfigurationException{

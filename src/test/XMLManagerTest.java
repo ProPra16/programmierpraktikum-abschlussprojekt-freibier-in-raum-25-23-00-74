@@ -7,13 +7,31 @@ public class XMLManagerTest {
     @Test
     public void testGetAufgabename() throws Exception {
         XMLManager.XMLManager("XMLAufgabe");
-        assertEquals("Romische Zahlen", XMLManager.getAufgabename());
+        assertEquals("Römische Zahlen", XMLManager.getAufgabename());
     }
 
     @Test
     public void testGetAufgabenstellung() throws Exception{
         XMLManager.XMLManager("XMLAufgabe");
-        assertEquals("Konvertiert arabische in romische Zahlen.", XMLManager.getAufgabenstellung());
+        assertEquals("Konvertiert arabische in römische Zahlen.", XMLManager.getAufgabenstellung());
+    }
+
+    @Test
+    public void testgetBabysteps() throws Exception{
+        XMLManager.XMLManager("XMLAufgabe");
+        assertEquals(true, XMLManager.getBabysteps());
+    }
+
+    @Test
+    public void testgetAttd() throws Exception{
+        XMLManager.XMLManager("XMLAufgabe");
+        assertEquals(true, XMLManager.getAttd());
+    }
+
+    @Test
+    public void testgetBabystepsTime() throws Exception{
+        XMLManager.XMLManager("XMLAufgabe");
+        assertEquals(100,XMLManager.getBabystepsTime());
     }
 
     @Test
