@@ -38,8 +38,8 @@ public class XMLManagerTest {
     public void testGetKlasse() throws Exception {
         XMLManager.XMLManager("XMLAufgabe");
         assertEquals("\n" +
-                "                public class RomanNumberConverter {\n" +
-                "                }\n" +
-                "            ",XMLManager.getKlasse());
+                "            public class RomanNumberConverter {\n" +
+                "            }\n" +
+                "        ",XMLManager.getKlasse());
     }
 }

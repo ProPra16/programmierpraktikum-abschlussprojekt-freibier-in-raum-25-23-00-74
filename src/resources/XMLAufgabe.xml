@@ -13,13 +13,15 @@
         </klasse>
     </klassen>
     <testName>myTest</testName>
-    <tests>
+    <test>
         import org.junit.Test;
         import static org.junit.Assert.*;
 
         public class myTest {
-
+            @Test
+            public void firstTest(){
+                assertEquals(true, true);
+            }
         }
-    </tests>
-    <testName>myTest</testName>
+    </test>
 </aufgabe>

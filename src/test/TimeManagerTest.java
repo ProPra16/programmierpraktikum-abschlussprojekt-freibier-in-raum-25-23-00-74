@@ -14,21 +14,21 @@ import static org.junit.Assert.assertEquals;
 public class TimeManagerTest {
     StateManager statem;
     StateManager state2;
-    static Collection<Code> codes;
+    static Code code;
     static InterfaceManager im;
+    static Code testcode;
     int a = 10;
 
     @BeforeClass //Fake StateManager
     public static void setup(){
-        Code test = new Code("public static void main(String[] args){\n\n}","Testaufgabenstellung","Aufgabe1");
-        codes = new ArrayList<>();
-        codes.add(test);
+        code = new Code("public static void main(String[] args){\n\n}","Testaufgabenstellung","Aufgabe1");
+        testcode = new Code("","","");
         im = mock(InterfaceManager.class);
     }
 
     @Test
     public void setStartTimetest(){
-        statem = new StateManager(codes,im,false);
+        statem = new StateManager(code,testcode,im);
         TimeManager manager = new TimeManager(statem);
         manager.setStartTime(a);
         assertEquals(10,manager.getStartTime());
@@ -36,7 +36,7 @@ public class TimeManagerTest {
 
     @Test
     public void runTimetest() throws InterruptedException {
-        state2 = new StateManager(codes,im,false);
+        state2 = new StateManager(code,testcode,im);
         TimeManager manager = new TimeManager(state2);
         manager.setStartTime(4);
         manager.runtime();
@@ -45,7 +45,7 @@ public class TimeManagerTest {
 
     @Test
     public void zeroruntest() {
-        statem = new StateManager(codes,im,false);
+        statem = new StateManager(code,testcode,im);
         TimeManager manager = new TimeManager(statem);
         manager.setStartTime(0);
         assertEquals(true,manager.zeroValueCheck());
@@ -53,7 +53,7 @@ public class TimeManagerTest {
 
     @Test
     public void runonesteptest() {
-        statem = new StateManager(codes,im,false);
+        statem = new StateManager(code,testcode,im);
         TimeManager manager = new TimeManager(statem);
         manager.setStartTime(3);
         manager.runOneStep();

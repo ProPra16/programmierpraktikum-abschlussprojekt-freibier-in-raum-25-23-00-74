@@ -17,23 +17,23 @@ import java.net.URISyntaxException;
  */
 public class XMLManager {
 
-    static String aufgabename;
-    static String aufgabenstellung;
-    static String klasse;
-    static String babysteps;
+    static String aufgabename = "";
+    static String aufgabenstellung = "";
+    static String klasse = "";
+    static String babysteps = "";
     static int babystepsTime;
-    static String attd;
-    static String attdInhalt;
-    static String dateiname;
-    static String testName;
-    static String test;
+    static String attd = "";
+    static String attdInhalt = "";
+    static String dateiname = "";
+    static String testName = "";
+    static String test = "";
 
     public static void XMLManager(String dateiname) throws ParserConfigurationException {
         DocumentBuilderFactory aufgabeXML = DocumentBuilderFactory.newInstance();
 
         try {
             DocumentBuilder XMLLesen = aufgabeXML.newDocumentBuilder();
-            Document document = XMLLesen.parse((XMLManager.class.getResource("/"+dateiname+".xml").toString()));
+            Document document = XMLLesen.parse(dateiname);
 
             NodeList rootNodes = document.getElementsByTagName("aufgabe");
             Node aufgabe = rootNodes.item(0);
@@ -59,9 +59,9 @@ public class XMLManager {
             Element testNameElement = (Element) testNameNode;
             testName = testNameElement.getTextContent();
 
-            Node testNode = noteElement.getElementsByTagName("attd").item(0);
+            Node testNode = noteElement.getElementsByTagName("test").item(0);
             Element testElement = (Element) testNode;
-            testName = testElement.getTextContent();
+            test = testElement.getTextContent();
 
             Node attdInhaltNode = noteElement.getElementsByTagName("attdInhalt").item(0);
             Element attdInhaltElement = (Element) attdInhaltNode;
@@ -75,14 +75,12 @@ public class XMLManager {
             Element aufgabenstellungElement = (Element) aufgabenstellungNode;
             aufgabenstellung = aufgabenstellungElement.getTextContent();
 
-
-
             Node klasseNode = noteElement.getElementsByTagName("klasse").item(0);
             Element klasseElement = (Element) klasseNode;
             klasse = klasseElement.getTextContent();
         }
         catch (AssertionError e){
-            System.out.println("Leider erfüllt die XML Datei nicht die Anforderungen");
+            System.out.println("Leider erfüllt die XML Datei nicht die Anforderungen1111111");
         }
         catch (NullPointerException e){
             System.out.println("Leider erfüllt die XML Datei nicht die Anforderungen");

@@ -70,7 +70,7 @@ public class StateManagerTest {
         sm = new StateManager(code,new Code("","",""),new Code("","","Aktzeptanztest"),im);
         when(im.getCode()).thenReturn("public class Aufgabe1{\n public static void main(String[] args){\n\n}\n}");
         when(im.getTestCode()).thenReturn("import org.junit.Test;\n" +
-                "import static org.junit.Assert.*;\n\npublic class AktzeptanzTest{\n\n@Test\npublic void firstTest(){\nassertEquals(true,false);\n}\n}");
+                "import static org.junit.Assert.*;\n\npublic class Aktzeptanztest{\n\n@Test\npublic void firstTest(){\nassertEquals(true,false);\n}\n}");
         sm.toNextStep();
         assertEquals("Red",sm.getCurrentState());
     }
@@ -80,8 +80,8 @@ public class StateManagerTest {
         sm = new StateManager(code,new Code("","",""),new Code("","","Aktzeptanztest"),im);
         when(im.getCode()).thenReturn("public class Aufgabe1{\n public static void main(String[] args){\n\n}\n}");
         when(im.getTestCode()).thenReturn("import org.junit.Test;\n" +
-                "import static org.junit.Assert.*;\n\npublic class AktzeptanzTest{\n\n@Test\npublic void firstTest(){\nassertEquals(true,true);\n}\n}");
+                "import static org.junit.Assert.*;\n\npublic class Aktzeptanztest{\n\n@Test\npublic void firstTest(){\nassertEquals(true,true);\n}\n}");
         sm.toNextStep();
-        assertEquals("ATTD",sm.getCurrentState());
+        assertEquals("ATDD",sm.getCurrentState());
     }
 }

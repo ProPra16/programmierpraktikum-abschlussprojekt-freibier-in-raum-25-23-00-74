@@ -1,15 +1,12 @@
 import javafx.application.Application;
 import  javafx.application.Platform;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.stage.FileChooser;
 import javafx.scene.control.*;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.event.*;
 import java.util.Optional;
@@ -17,10 +14,8 @@ import java.util.Optional;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.lang.Object;
 import java.lang.String;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class GUIMain extends Application
 {
@@ -35,10 +30,10 @@ public class GUIMain extends Application
     Stage mainStage;
 
 	// Aus der fxml-Datei gefiltert
-	TabPane CodeTabPane;
-    SingleSelectionModel<Tab> CTabSM;
-    TabPane TestTabPane;
-    SingleSelectionModel<Tab> TTabSM;
+    Label CodeLabel;
+    Label TestLabel;
+	TextArea CodePane;
+    TextArea TestPane;
     TextArea Console;
     Button DoneButton;
     Button BackButton;
@@ -47,10 +42,9 @@ public class GUIMain extends Application
     // Menu
     MenuBar MainMenu;
     Menu FileMenu;
-    MenuItem NewMButton;
     MenuItem OpenMButton;
     MenuItem SaveMButton;
-    MenuItem SaveAsMButton;
+    MenuItem ExportMButton;
     MenuItem CloseMButton;
     //----------
 
@@ -90,8 +84,10 @@ public class GUIMain extends Application
          _RefPhase = new Image(getClass().getResource("/_RefPhase.png").toString());
 
          // GUI-Elemente aus der fxml filtern
-         CodeTabPane = (TabPane)scene.lookup("#CodeTabPane");
-         TestTabPane = (TabPane)scene.lookup("#TestTabPane");
+         CodeLabel = (Label) scene.lookup("#CodeLabel");
+         TestLabel = (Label) scene.lookup("#TestLabel");
+         CodePane = (TextArea)scene.lookup("#CodePane");
+         TestPane = (TextArea)scene.lookup("#TestPane");
          Console = (TextArea)scene.lookup("#Console");
          DoneButton = (Button)scene.lookup("#DoneButton");
          BackButton = (Button)scene.lookup("#BackButton");
@@ -99,77 +95,49 @@ public class GUIMain extends Application
 
          MainMenu = (MenuBar)scene.lookup("#MenuBar");
          FileMenu = MainMenu.getMenus().get(0);
-         NewMButton = FileMenu.getItems().get(0);
-         OpenMButton = FileMenu.getItems().get(1);
-         SaveMButton = FileMenu.getItems().get(2);
-         SaveAsMButton = FileMenu.getItems().get(3);
-         CloseMButton = FileMenu.getItems().get(4);
+         OpenMButton = FileMenu.getItems().get(0);
+         SaveMButton = FileMenu.getItems().get(1);
+         ExportMButton = FileMenu.getItems().get(2);
+         CloseMButton = FileMenu.getItems().get(3);
          //--------------------------------
 
          // GUI-Elemente finalisieren
-         CodeTabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
-         TestTabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
-         CTabSM = CodeTabPane.getSelectionModel();
-         TTabSM = TestTabPane.getSelectionModel();
-
          // Eventhandler
          initializeEventHandler();
          //-------------------------
+
+         ShowWelcomeFileSelection();
 
          // Logik initialisieren
          initializeLogic();
          //--------------------------
 
          // Show Scene
-         if(CodeTabPane != null)
-            stage.setTitle("TDDT");
-         else
-            stage.setTitle("ERROR");
+         stage.setTitle("ERROR");
 
          stage.setScene(scene);
          stage.setMaximized(true);
 
          stage.show();
 
-         ShowWelcomeFileSelection();
+
      }
 
      void initializeLogic()
      {
-         // INIT XML //
-         try
-         {
-             XMLManager.XMLManager("XMLAufgabe");
-         }
-         catch (ParserConfigurationException e)
-         {
-             e.printStackTrace();
-         }
-
          // InterfaceManager //
-         HashMap<String, TextArea> Code = new HashMap<String, TextArea>();
-
-         // Ersten Tab neu initialisieren
-         Tab ctab = CodeTabPane.getTabs().get(0);
-         ctab.setText(XMLManager.getAufgabename());
-         Code.put(XMLManager.getAufgabename(), (TextArea)ctab.getContent().lookup("#cta0"));
-         HashMap<String, TextArea> TestCode = new HashMap<String, TextArea>();
-
-         // Ersten Tab neu initialisieren
-         Tab ttab = TestTabPane.getTabs().get(0);
-         ttab.setText(XMLManager.getAufgabename() + " Test");
-         TestCode.put("Tests", (TextArea)ttab.getContent().lookup("#tta0"));
-
-         interfaceManager = new InterfaceManager(Code, TestCode, Console);
+         interfaceManager = new InterfaceManager(CodePane, TestPane, Console);
 
          // StateManager //
-         java.util.Collection<Code> codes = new ArrayList<Code>();
-
          Code firstC = new Code(XMLManager.getKlasse(), XMLManager.getAufgabenstellung(), XMLManager.getAufgabename());
-         codes.add(firstC);
          currentFile = firstC.dateiname;
+         String s =  XMLManager.getTestName();
+         Code firstT = new Code(XMLManager.getTest(), "", XMLManager.getTestName());
 
-         stateManager = new StateManager(codes, interfaceManager,false);
+         // Datei öffnen
+         //FileManager.openFile(file.getName().toString().substring(0, file.getName().toString().indexOf(".")));
+
+         stateManager = new StateManager(firstC, firstT, interfaceManager);
          updatePhase();
      }
 
@@ -180,60 +148,13 @@ public class GUIMain extends Application
         BackButton.setOnAction(new EventHandler<ActionEvent>() { @Override public void handle(ActionEvent e) { backStep(); } });
 
         // Menu //
-        NewMButton.setOnAction(new EventHandler<ActionEvent>() { @Override public void handle(ActionEvent e) { NewMenuHandler(); } });
-
         OpenMButton.setOnAction(new EventHandler<ActionEvent>() { @Override public void handle(ActionEvent e) { OpenMenuHandler(); } });
 
         SaveMButton.setOnAction(new EventHandler<ActionEvent>() { @Override public void handle(ActionEvent e) { SaveMenuHandler(); } });
 
-        SaveAsMButton.setOnAction(new EventHandler<ActionEvent>() { @Override public void handle(ActionEvent e) { SaveAsMenuHandler(); } });
+        ExportMButton.setOnAction(new EventHandler<ActionEvent>() { @Override public void handle(ActionEvent e) { ExportMenuHandler(); } });
 
         CloseMButton.setOnAction(new EventHandler<ActionEvent>() { @Override public void handle(ActionEvent e) { CloseMenuHandler(); } });
-    }
-
-    // Fügt neuen Code/TestCode Tab hinzu
-    int TabCount = 1;
-    void addTab(String fileName, String content, boolean code)
-    {
-        TextArea codePanel = new TextArea();
-        String tabId = "";
-        if(code)
-            tabId = "cta" + TabCount;
-        else
-            tabId = "tta" + TabCount;
-        codePanel.setId(tabId);
-        codePanel.setText(content);
-
-        Tab item = new Tab();
-        item.setText(fileName);
-        item.setContent(codePanel);
-        item.setOnClosed(new EventHandler<Event>() {
-            @Override
-            public void handle(Event event) {
-                removeTab(((Tab)event.getSource()).getText());
-            }
-        });
-        item.setOnSelectionChanged(new EventHandler<Event>() {
-            @Override
-            public void handle(Event event) {
-                currentFile = ((Tab)event.getSource()).getText();
-            }
-        });
-
-        if(code) {
-            CodeTabPane.getTabs().add(item);
-            CTabSM.select(item);
-        }
-        else {
-            TestTabPane.getTabs().add(item);
-            TTabSM.select(item);
-        }
-
-        interfaceManager.addTextArea(fileName, codePanel, code);
-
-        TabCount++;
-
-        currentFile = fileName;
     }
 
     void updatePhase()
@@ -242,61 +163,56 @@ public class GUIMain extends Application
         {
             case "Red":
                 PhaseView.setImage(_TestPhase);
-                for(int i = 0; i < CodeTabPane.getTabs().size(); i++)
-                {
-                    Tab t = CodeTabPane.getTabs().get(i);
-                    TextArea ta = (TextArea)t.getContent().lookup("#cta" + i);
-                    ta.setEditable(false);
-                }
-                for(int i = 0; i < TestTabPane.getTabs().size(); i++)
-                {
-                    Tab t = TestTabPane.getTabs().get(i);
-                    TextArea ta = (TextArea)t.getContent().lookup("#tta" + i);
-                    ta.setEditable(true);
-                }
+                CodePane.setEditable(false);
+                TestPane.setEditable(true);
                 break;
             case "Green":
                 PhaseView.setImage(_CodePhase);
-                for(int i = 0; i < CodeTabPane.getTabs().size(); i++)
-                {
-                    Tab t = CodeTabPane.getTabs().get(i);
-                    TextArea ta = (TextArea)t.getContent().lookup("#cta" + i);
-                    ta.setEditable(true);
-                }
-                for(int i = 0; i < TestTabPane.getTabs().size(); i++)
-                {
-                    Tab t = TestTabPane.getTabs().get(i);
-                    TextArea ta = (TextArea)t.getContent().lookup("#tta" + i);
-                    ta.setEditable(false);
-                }
+                CodePane.setEditable(true);
+                TestPane.setEditable(false);
                 break;
             case "Refactor":
                 PhaseView.setImage(_RefPhase);
-                for(int i = 0; i < TestTabPane.getTabs().size(); i++)
-                {
-                    Tab t = TestTabPane.getTabs().get(i);
-                    TextArea ta = (TextArea)t.getContent().lookup("#tta");
-                    ta.setEditable(true);
-                }
-                for(int i = 0; i < TestTabPane.getTabs().size(); i++)
-                {
-                    Tab t = TestTabPane.getTabs().get(i);
-                    TextArea ta = (TextArea)t.getContent().lookup("#tta" + i);
-                    ta.setEditable(true);
-                }
+                CodePane.setEditable(true);
+                TestPane.setEditable(true);
                 break;
         }
     }
 
-    // Eventhandler, entfernt Code/TestCode Tab
-    void removeTab(String fileName)
-    {
-        interfaceManager.removeCode(fileName);
-        TabCount--;
-    }
-
     void nextStep() {
+        // Alert der dem Nutzer Statusänderungen (oder auch nicht) anzeigt
+        Alert alert =  new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Willkommen");
+        alert.setHeaderText("Willkommen zu TDDT. Möchten sie eine neue Aufgabe auswählen oder letztes Projekt laden?");
+
+        String currentState = stateManager.currentState;
         stateManager.toNextStep();
+
+        // Änderung switchen
+        if(currentState.equals(stateManager.currentState) && currentState.equals("Red"))
+        {
+            alert =  new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Test failed");
+            alert.setContentText("Tests sind nicht compiliert oder es schlägt mindestens ein Test fehl.\nBitte Tests überprüfen");
+        }
+        else if(currentState.equals(stateManager.currentState) && currentState.equals("Green"))
+        {
+            alert =  new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Code failed");
+            alert.setContentText("Code ist nicht compiliert oder es schlägt mindestens ein Test fehl.\nBitte Code überprüfen");
+        }
+        else if(stateManager.currentState.equals("Green") && currentState.equals("Red"))
+        {
+            alert =  new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Fortschritt");
+            alert.setContentText("Tests sind compiliert und genau einer schlägt fehl.\nBitte diesen Tests erfüllen");
+        }
+        else if(stateManager.currentState.equals("Red") && currentState.equals("Green"))
+        {
+            alert =  new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Rückschritt");
+            alert.setContentText("Tests sind compiliert und genau einer schlägt fehl.\nBitte diesen Tests erfüllen");
+        }
         updatePhase();
     }
 
@@ -305,26 +221,28 @@ public class GUIMain extends Application
         updatePhase();
     }
 
-    // Menu-Eventhandler //
-    void NewMenuHandler()
-    {
-        interfaceManager.writeToConsole("AAAAAAAAAAHHH");
-    }
-
+    // Menu-Eventhandler
     void OpenMenuHandler()
     {
         // Dialog öffnen
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open XML-File");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
+        fileChooser.getExtensionFilters().add(extFilter);
+        File defaultDirectory = new File(System.getProperty("user.dir"));
+        fileChooser.setInitialDirectory(defaultDirectory);
+
         File file = fileChooser.showOpenDialog(mainStage);
 
         try
         {
             // Datei öffnen
-            FileManager.openFile(file.getName().toString().substring(0, file.getName().toString().indexOf(".")));
+            FileManager.openFile(file.getAbsolutePath());
 
-            // Neuen Tab generieren
-            addTab(XMLManager.getAufgabename(), XMLManager.getKlasse(), true);
+            // TA init
+            currentFile = XMLManager.getAufgabename();
+            CodeLabel.setText(XMLManager.getAufgabename());
+            CodePane.setText(XMLManager.getKlasse());
 
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
@@ -334,26 +252,26 @@ public class GUIMain extends Application
     void SaveMenuHandler()
     {
         try {
-            FileManager.safeFile(currentFile, interfaceManager.getCode(currentFile));
+            FileManager.safeFile(currentFile, interfaceManager.getCode(), interfaceManager.getTestCode(), "");
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         }
     }
 
-    void SaveAsMenuHandler()
+    void ExportMenuHandler()
     {
         // Dialog öffnen
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save XML-File");
+        fileChooser.setTitle("Save as Java-File");
 
         // Extension filter
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Java files (*.java)", "*.java");
         fileChooser.getExtensionFilters().add(extFilter);
 
         File file = fileChooser.showSaveDialog(mainStage);
 
         try {
-            FileManager.safeFile(file.getName().toString().substring(0, file.getName().toString().indexOf(".")), interfaceManager.getCode(currentFile));
+            FileManager.safeFile(file.getName().toString().substring(0, file.getName().toString().indexOf(".")), interfaceManager.getCode(), interfaceManager.getTestCode(), "");
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         }
@@ -383,9 +301,9 @@ public class GUIMain extends Application
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == New){
-            // ... user chose "One"
+            OpenMenuHandler();
         } else if (result.get() == Load) {
-            // ... user chose "Two"
+            OpenMenuHandler();
         } else {
             // ... user chose CANCEL or closed the dialog
         }

@@ -33,6 +33,14 @@ public class RealCompileManager {
         result = compiler.getCompilerResult();
     }
 
+    public void compileTest(){
+        testunit = new CompilationUnit(testname,testcontent,true);
+        compiler = CompilerFactory.getCompiler(testunit);
+        compiler.compileAndRunTests();
+        tr = compiler.getTestResult();
+        result = compiler.getCompilerResult();
+    }
+
     public boolean compiles(){
         if(result.hasCompileErrors()) return false;
         return true;

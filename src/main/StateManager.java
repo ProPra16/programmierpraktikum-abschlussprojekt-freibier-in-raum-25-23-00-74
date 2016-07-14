@@ -10,6 +10,7 @@ public class StateManager {
     boolean attd;
 
     public StateManager(Code code, Code test, Code akTest, InterfaceManager im){
+        this.im=im;
         cm = new CodeManager();
         cm.setCode(code);
         cm.setTest(test);
@@ -19,6 +20,7 @@ public class StateManager {
     }
 
     public StateManager(Code code, Code test, InterfaceManager im){
+        this.im=im;
         cm = new CodeManager();
         cm.setCode(code);
         cm.setTest(test);
@@ -51,7 +53,7 @@ public class StateManager {
 
     public void toNextStep(){
         switch(currentState){
-            case "ATTD": fromATTDtoRed(); break;
+            case "ATDD": fromATTDtoRed(); break;
             case "Red": fromRedToGreen(); break;
             case "Green": codeAndTestsWorkToNextPhase(); break;
             case "Refactor": codeAndTestsWorkToNextPhase(); break;
@@ -61,8 +63,15 @@ public class StateManager {
     private void fromRedToGreen(){
         update(false);
         RealCompileManager compiler = new RealCompileManager(cm.getCode(),cm.getTest().getDateiname(),cm.getTest().getKlasse());
-        compiler.runCompiler();
-        if(!compiler.compiles()||compiler.getNumberOfFailedTests()==1){
+        compiler.compileTest();
+        //System.out.println(compiler.getNumberOfFailedTests());
+        if(compiler.compiles()){
+            if(compiler.getNumberOfFailedTests()==1){
+                replaceBackupCode();
+                currentState = "Green";
+            }
+        }
+        else if(!compiler.compiles()){
             replaceBackupCode();
             currentState = "Green";
         }
@@ -102,7 +111,7 @@ public class StateManager {
                 currentState = "Refactor";
             }
             else if(currentState.equalsIgnoreCase("refactor")&&attd){
-                currentState = "ATTD";
+                currentState = "ATDD";
                 printToGUI(cm.getCode(),cm.getakTest());
                 fromATTDtoRed();
             }
@@ -119,6 +128,8 @@ public class StateManager {
     public void fromATTDtoRed(){
         update(true);
             RealCompileManager compiler = new RealCompileManager(cm.getCode(),cm.getakTest().getDateiname(),cm.getakTest().getKlasse());
+            compiler.runCompiler();
+        System.out.println(compiler.getCompileErrors());
             if(compiler.compiles()){
                 if(compiler.getNumberOfFailedTests()==1){
                     currentState="Red";
