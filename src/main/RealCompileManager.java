@@ -31,6 +31,7 @@ public class RealCompileManager {
         compiler.compileAndRunTests();
         tr = compiler.getTestResult();
         result = compiler.getCompilerResult();
+        System.out.printf("");
     }
 
     public void compileTest(){
@@ -48,19 +49,21 @@ public class RealCompileManager {
 
     public String getCompileErrors() {
         String solution = "";
-        Collection<CompileError> coll;
-        for (CompileError t : result.getCompilerErrorsForCompilationUnit(testunit)) {
+        for (CompileError t : result.getCompilerErrorsForCompilationUnit(cunit)) {
             solution += t.toString();
         }
         return solution;
     }
 
-    public String getTestErrors(){
-        String testerrors="";
+    public String getTestErrors() {
+        String testerrors = "";
         Collection<TestFailure> coll;
-        for(TestFailure t : tr.getTestFailures()){
-            testerrors += "Class: " + t.getTestClassName() + "\nFunction: " + t.getMethodName()+ " \nThat is the outcum: " + t.getMessage() + "\n";
+        if (tr == null)
+            return "";
+        for (TestFailure t : tr.getTestFailures()) {
+            testerrors += "Class: " + t.getTestClassName() + "\nFunction: " + t.getMethodName() + " \nThat is the outcum: " + t.getMessage() + "\n";
         }
+
         return testerrors;
     }
 

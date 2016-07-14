@@ -28,12 +28,12 @@ public class XMLManager {
     static String testName = "";
     static String test = "";
 
-    public static void XMLManager(String dateiname) throws ParserConfigurationException {
+    public static void XMLManager(String datei) throws ParserConfigurationException {
         DocumentBuilderFactory aufgabeXML = DocumentBuilderFactory.newInstance();
 
         try {
             DocumentBuilder XMLLesen = aufgabeXML.newDocumentBuilder();
-            Document document = XMLLesen.parse(dateiname);
+            Document document = XMLLesen.parse(datei);
 
             NodeList rootNodes = document.getElementsByTagName("aufgabe");
             Node aufgabe = rootNodes.item(0);

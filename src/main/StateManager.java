@@ -105,8 +105,13 @@ public class StateManager {
         update(false);
         RealCompileManager compiler = new RealCompileManager(cm.getCode(),cm.getTest().getDateiname(),cm.getTest().getKlasse());
         compiler.runCompiler();
+        System.out.printf(currentState);
+        boolean  b= compiler.compiles();
+        //int c = compiler.getNumberOfFailedTests();
+        //System.out.printf("-- " + c);
         if(compiler.compiles()&&compiler.getNumberOfFailedTests()==0) {
             replaceBackupCode();
+            System.out.printf(currentState);
             if(currentState.equalsIgnoreCase("green")){
                 currentState = "Refactor";
             }
@@ -120,8 +125,12 @@ public class StateManager {
             }
         }
         else{
+            System.out.printf(" >>> " + compiler.getCompileErrors());
             im.writeToConsole(compiler.getCompileErrors());
-            im.writeToConsole(compiler.getTestErrors());
+            if(compiler.compiles())
+                im.writeToConsole(compiler.getTestErrors());
+
+            System.out.printf("");
         }
     }
 

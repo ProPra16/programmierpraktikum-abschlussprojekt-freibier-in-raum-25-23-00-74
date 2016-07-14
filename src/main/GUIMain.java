@@ -129,7 +129,7 @@ public class GUIMain extends Application
          interfaceManager = new InterfaceManager(CodePane, TestPane, Console);
 
          // StateManager //
-         Code firstC = new Code(XMLManager.getKlasse(), XMLManager.getAufgabenstellung(), XMLManager.getAufgabename());
+         Code firstC = new Code(XMLManager.getKlasse(), XMLManager.getAufgabenstellung(), XMLManager.getDateiname());
          currentFile = firstC.dateiname;
          String s =  XMLManager.getTestName();
          Code firstT = new Code(XMLManager.getTest(), "", XMLManager.getTestName());
@@ -185,34 +185,35 @@ public class GUIMain extends Application
         alert.setTitle("Willkommen");
         alert.setHeaderText("Willkommen zu TDDT. Möchten sie eine neue Aufgabe auswählen oder letztes Projekt laden?");
 
-        String currentState = stateManager.currentState;
+        String currentState = stateManager.getCurrentState();
         stateManager.toNextStep();
 
         // Änderung switchen
-        if(currentState.equals(stateManager.currentState) && currentState.equals("Red"))
+        if(currentState.equals(stateManager.getCurrentState()) && currentState.equals("Red"))
         {
             alert =  new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Test failed");
             alert.setContentText("Tests sind nicht compiliert oder es schlägt mindestens ein Test fehl.\nBitte Tests überprüfen");
         }
-        else if(currentState.equals(stateManager.currentState) && currentState.equals("Green"))
+        else if(currentState.equals(stateManager.getCurrentState()) && currentState.equals("Green"))
         {
             alert =  new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Code failed");
             alert.setContentText("Code ist nicht compiliert oder es schlägt mindestens ein Test fehl.\nBitte Code überprüfen");
         }
-        else if(stateManager.currentState.equals("Green") && currentState.equals("Red"))
+        else if(stateManager.getCurrentState().equals("Green") && currentState.equals("Red"))
         {
             alert =  new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Fortschritt");
             alert.setContentText("Tests sind compiliert und genau einer schlägt fehl.\nBitte diesen Tests erfüllen");
         }
-        else if(stateManager.currentState.equals("Red") && currentState.equals("Green"))
+        else if(stateManager.getCurrentState().equals("Red") && currentState.equals("Green"))
         {
             alert =  new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Rückschritt");
             alert.setContentText("Tests sind compiliert und genau einer schlägt fehl.\nBitte diesen Tests erfüllen");
         }
+        alert.showAndWait();
         updatePhase();
     }
 
