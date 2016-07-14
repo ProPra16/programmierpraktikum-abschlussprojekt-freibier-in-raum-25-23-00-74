@@ -2,7 +2,7 @@
     <aufgabename>Römische Zahlen</aufgabename>
     <dateiname>RomanNumberConverter</dateiname>
     <aufgabenstellung>Konvertiert arabische in römische Zahlen.</aufgabenstellung>
-    <babysteps>true</babysteps>
+    <babysteps>false</babysteps>
     <babystepstime>26</babystepstime>
     <attd>true</attd>
     <attdInhalt></attdInhalt>

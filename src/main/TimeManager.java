@@ -50,20 +50,8 @@ public class TimeManager {
     public void Pause()
     {
         running = false;
-        /*
-        try {
-            Platform.runLater(()->{label.setText("Pause");
-                try {
-                    timer.cancel();
-                    timer.purge();
-                    timer = null;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
+
+        label.setText("Pause");
     }
 
     public void Restart()
@@ -77,12 +65,11 @@ public class TimeManager {
 
             while (true) {
                 if(running) {
-                    currentTime--;
 
                     Platform.runLater(() -> {
                         label.setText("Verbleibende Zeit: " + currentTime);
                     });
-
+                    currentTime--;
 
                     if (currentTime <= 0) {
                         Platform.runLater(() -> {

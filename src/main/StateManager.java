@@ -6,7 +6,7 @@ public class StateManager {
     CodeManager cm;
     InterfaceManager im;
     String currentState;
-    Boolean isgoingbackwardallwed = false;
+    boolean isgoingbackwardallwed = false;
     boolean attd;
 
     public StateManager(Code code, Code test, Code akTest, InterfaceManager im){
@@ -65,7 +65,6 @@ public class StateManager {
         RealCompileManager compiler = new RealCompileManager(cm.getCode(),cm.getTest().getDateiname(),cm.getTest().getKlasse());
         if(isgoingbackwardallwed) compiler.runCompiler();
         else compiler.compileTest();
-        //System.out.println(compiler.getNumberOfFailedTests());
         if(compiler.compiles()){
             if(compiler.getNumberOfFailedTests()==1){
                 replaceBackupCode();
@@ -92,7 +91,7 @@ public class StateManager {
     public void fromRedToRefactor(){
         cm.resetTest();
         printToGUI(cm.getCode(),cm.getTest());
-        currentState = "Refactor";
+        if(isgoingbackwardallwed) currentState = "Refactor";
     }
 
     public void resetCodetoStart(){
@@ -100,6 +99,7 @@ public class StateManager {
         if(currentState.equalsIgnoreCase("green"))  fromGreenToRed();
         if(currentState.equalsIgnoreCase("red"))    fromRedToRefactor();
     }
+
 
     private void codeAndTestsWorkToNextPhase(){
         //Check if all code compiles
