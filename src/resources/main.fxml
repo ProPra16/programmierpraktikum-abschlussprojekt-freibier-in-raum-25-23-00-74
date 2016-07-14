@@ -45,7 +45,8 @@
          <children>
             <Button fx:id="DoneButton" mnemonicParsing="false" text="Done" />
             <Button fx:id="BackButton" mnemonicParsing="false" text="Back" GridPane.columnIndex="2" />
-            <ImageView fx:id="PhaseView" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <ImageView fx:id="PhaseView" fitHeight="93.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="TimeLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="217.0" text="Label" GridPane.columnIndex="1" />
          </children>
       </GridPane>
       <TextArea fx:id="Console" GridPane.rowIndex="3" />

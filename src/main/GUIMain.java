@@ -23,6 +23,7 @@ public class GUIMain extends Application
     InterfaceManager interfaceManager;
     StateManager stateManager;
     String currentFile;
+    TimeManager timer;
     //------
 
     // GUI //
@@ -38,6 +39,7 @@ public class GUIMain extends Application
     Button DoneButton;
     Button BackButton;
     ImageView PhaseView;
+    Label TimeLabel;
 
     // Menu
     MenuBar MainMenu;
@@ -92,6 +94,7 @@ public class GUIMain extends Application
          DoneButton = (Button)scene.lookup("#DoneButton");
          BackButton = (Button)scene.lookup("#BackButton");
          PhaseView = (ImageView)scene.lookup("#PhaseView");
+         TimeLabel = (Label) scene.lookup("#TimeLabel");
 
          MainMenu = (MenuBar)scene.lookup("#MenuBar");
          FileMenu = MainMenu.getMenus().get(0);
@@ -123,8 +126,7 @@ public class GUIMain extends Application
 
      }
 
-     void initializeLogic()
-     {
+     void initializeLogic(){
          // InterfaceManager //
          interfaceManager = new InterfaceManager(CodePane, TestPane, Console);
 
@@ -138,6 +140,12 @@ public class GUIMain extends Application
          //FileManager.openFile(file.getName().toString().substring(0, file.getName().toString().indexOf(".")));
 
          stateManager = new StateManager(firstC, firstT, interfaceManager);
+
+         if(XMLManager.getBabysteps()) {
+             timer = new TimeManager(stateManager, TimeLabel, this);
+             timer.setStartTime(XMLManager.getBabystepsTime());
+         }
+
          updatePhase();
      }
 
@@ -165,16 +173,31 @@ public class GUIMain extends Application
                 PhaseView.setImage(_TestPhase);
                 CodePane.setEditable(false);
                 TestPane.setEditable(true);
+                BackButton.setDisable(true);
+                if(timer != null)
+                {
+                    timer.resetCurrentTime();
+                    timer.runtime();
+                }
                 break;
             case "Green":
                 PhaseView.setImage(_CodePhase);
                 CodePane.setEditable(true);
                 TestPane.setEditable(false);
+                BackButton.setDisable(false);
+                if(timer != null)
+                {
+                    timer.resetCurrentTime();
+                    timer.runtime();
+                }
                 break;
             case "Refactor":
                 PhaseView.setImage(_RefPhase);
                 CodePane.setEditable(true);
                 TestPane.setEditable(true);
+                BackButton.setDisable(true);
+                if(timer != null)
+                    timer.Pause();
                 break;
         }
     }
@@ -212,6 +235,24 @@ public class GUIMain extends Application
             alert =  new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Rückschritt");
             alert.setContentText("Tests sind compiliert und genau einer schlägt fehl.\nBitte diesen Tests erfüllen");
+        }
+        else if(stateManager.getCurrentState().equals("Refactor") && currentState.equals("Green"))
+        {
+            alert =  new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Fortschritt");
+            alert.setContentText("Tests wurden erfüllt.\nDu hast nun die Möglichkeit deinen Code zu verbessern.");
+        }
+        else if(stateManager.getCurrentState().equals("Refactor") && currentState.equals("Refactor"))
+        {
+            alert =  new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Fehler");
+            alert.setContentText("Code oder Test compilieren nicht oder die Test laufen nicht mehr durch!");
+        }
+        else if(stateManager.getCurrentState().equals("Red") && currentState.equals("Refactor"))
+        {
+            alert =  new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Fortschritt");
+            alert.setContentText("Tests wurden erfüllt.\nBitte neuen fehlschlagenden Test schreiben!");
         }
         alert.showAndWait();
         updatePhase();
@@ -308,6 +349,19 @@ public class GUIMain extends Application
         } else {
             // ... user chose CANCEL or closed the dialog
         }
+    }
+
+    public void ShowTimeoutAlert()
+    {
+        Platform.runLater(()->
+                {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Out of Time");
+                    alert.setHeaderText("Deine Bearbeitungszeit ist abgelaufen!\nPhase zurück gesetzt!");
+                    alert.showAndWait();
+                });
+
+        timer.Pause();
     }
 
 }

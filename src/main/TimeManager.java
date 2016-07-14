@@ -1,85 +1,90 @@
+import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.control.Label;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 /**
  * Created by Martin on 13.07.2016.
  */
 public class TimeManager {
-    private IntegerProperty CurrentTime = new SimpleIntegerProperty();
+    private int currentTime;
     private int StartTime;
     private StateManager state;
-    private int status = 0;
+    private Label label;
 
-    public TimeManager(StateManager existingstate){
+    private GUIMain Main;
+
+    private Timer timer;
+
+    public TimeManager(StateManager existingstate, Label l, GUIMain Main){
         state = existingstate;
-    }
-    public void test(){
-
-    }
-
-    private void createListener(){
-        ChangeListener listener = new ChangeListener() {
-            @Override
-            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                if(CurrentTime.getValue() > 0 && status == 0) {
-                    System.out.println("Listener hört dir zu1 " + CurrentTime.getValue());
-                    // Hier muss eingefügt werden, in welchem Feld etwas verändert werden soll
-                }
-                // Babystepsbefehl
-                if(zeroValueCheck() && !state.currentState.equals("Refractor")){
-                    state.resetCodetoStart();
-                    status = 1;
-                    System.out.println("Listener hört dir zu2 " + CurrentTime.getValue() );
-                }
-            }
-        };
-        CurrentTime.addListener(listener);
-    }
-
-    public boolean zeroValueCheck(){
-        if(CurrentTime.getValue() == 0) return true;
-        return false;
+        label = l;
+        this.Main = Main;
     }
 
     public void setStartTime(int TimeValue){
         StartTime = TimeValue;
-        createListener();
-        CurrentTime.setValue(StartTime);
-
+        currentTime = StartTime;
     }
 
     public int getCurrentTime(){
-        return CurrentTime.getValue();
+        return currentTime;
     }
 
     public int getStartTime(){
         return StartTime;
     }
 
-    public void runOneStep(){
-        CurrentTime.setValue(CurrentTime.getValue() - 1);
-    }
-
     public void resetCurrentTime(){
-        CurrentTime.setValue(StartTime);
+        currentTime = StartTime;
     }
 
-    public void runtime() throws InterruptedException {
-        while(CurrentTime.getValue() >= 0 && status == 0){
-            Thread.sleep(1000);
-            runOneStep();
+    public void Pause()
+    {
+        try {
+            Platform.runLater(()->{label.setText("Pause");
+                try {
+                    timer.cancel();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
-    // Kann durch einen Klick auf einen Button aufgerufen werden um die Phase
-    // zurückgesetze Phase zustarten
-    public void resetStatus() throws InterruptedException {
-        status = 0;
+
+    public void Restart()
+    {
         runtime();
     }
 
+    public void runtime() {
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                currentTime--;
+
+                Platform.runLater(()->{label.setText("Verbleibende Zeit: " + currentTime);});
+
+
+                if(currentTime <= 0) {
+                    state.resetCodetoStart();
+                    Main.ShowTimeoutAlert();
+
+                    resetCurrentTime();
+                }
+            }
+        }, 0, 1000);
+    }
 }
 
 

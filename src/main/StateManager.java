@@ -63,7 +63,8 @@ public class StateManager {
     private void fromRedToGreen(){
         update(false);
         RealCompileManager compiler = new RealCompileManager(cm.getCode(),cm.getTest().getDateiname(),cm.getTest().getKlasse());
-        compiler.compileTest();
+        if(isgoingbackwardallwed) compiler.runCompiler();
+        else compiler.compileTest();
         //System.out.println(compiler.getNumberOfFailedTests());
         if(compiler.compiles()){
             if(compiler.getNumberOfFailedTests()==1){
@@ -122,6 +123,7 @@ public class StateManager {
             }
             else{
                 currentState = "Red";
+                isgoingbackwardallwed = true;
             }
         }
         else{

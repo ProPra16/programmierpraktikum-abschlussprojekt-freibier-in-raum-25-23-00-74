@@ -3,7 +3,7 @@
     <dateiname>RomanNumberConverter</dateiname>
     <aufgabenstellung>Konvertiert arabische in römische Zahlen.</aufgabenstellung>
     <babysteps>true</babysteps>
-    <babystepstime>100</babystepstime>
+    <babystepstime>4</babystepstime>
     <attd>true</attd>
     <attdInhalt></attdInhalt>
     <klassen>
