@@ -24,12 +24,12 @@ public class InterfaceManager
 	public void setCode(String code) { Code.setText(code); }
 	
 	// Zugriff auf das Test-Coding-Area
-	public String getTestCode(String dataName)
+	public String getTestCode()
 	{
 		return TestCode.getText();
 	}
 	
-	public void setTestCode(String dataName, String code) { TestCode.setText(code); }
+	public void setTestCode(String code) { TestCode.setText(code); }
 
 	// Zugriff auf die Console
 	public void writeToConsole(String message)
