@@ -97,8 +97,8 @@ public class StateManager {
 
     public void resetCodetoStart(){
         //Reset Code für babysteps
-        if(currentState.equals("green"))  fromGreenToRed();
-        if(currentState.equals("red"))    fromRedToRefactor();
+        if(currentState.equalsIgnoreCase("green"))  fromGreenToRed();
+        if(currentState.equalsIgnoreCase("red"))    fromRedToRefactor();
     }
 
     private void codeAndTestsWorkToNextPhase(){
@@ -106,13 +106,8 @@ public class StateManager {
         update(false);
         RealCompileManager compiler = new RealCompileManager(cm.getCode(),cm.getTest().getDateiname(),cm.getTest().getKlasse());
         compiler.runCompiler();
-        System.out.printf(currentState);
-        boolean  b= compiler.compiles();
-        //int c = compiler.getNumberOfFailedTests();
-        //System.out.printf("-- " + c);
         if(compiler.compiles()&&compiler.getNumberOfFailedTests()==0) {
             replaceBackupCode();
-            System.out.printf(currentState);
             if(currentState.equalsIgnoreCase("green")){
                 currentState = "Refactor";
             }

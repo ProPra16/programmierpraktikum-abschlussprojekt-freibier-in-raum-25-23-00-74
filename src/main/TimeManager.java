@@ -21,6 +21,8 @@ public class TimeManager {
     private GUIMain Main;
 
     private Timer timer;
+    private Thread thread;
+    private boolean running = false;
 
     public TimeManager(StateManager existingstate, Label l, GUIMain Main){
         state = existingstate;
@@ -47,43 +49,59 @@ public class TimeManager {
 
     public void Pause()
     {
+        running = false;
+        /*
         try {
             Platform.runLater(()->{label.setText("Pause");
                 try {
                     timer.cancel();
+                    timer.purge();
+                    timer = null;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             });
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     public void Restart()
     {
-        runtime();
+        running = true;
     }
 
     public void runtime() {
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
+        running = true;
+        thread = new Thread(()-> {
 
-            @Override
-            public void run() {
-                currentTime--;
+            while (true) {
+                if(running) {
+                    currentTime--;
 
-                Platform.runLater(()->{label.setText("Verbleibende Zeit: " + currentTime);});
+                    Platform.runLater(() -> {
+                        label.setText("Verbleibende Zeit: " + currentTime);
+                    });
 
 
-                if(currentTime <= 0) {
-                    state.resetCodetoStart();
-                    Main.ShowTimeoutAlert();
+                    if (currentTime <= 0) {
+                        Platform.runLater(() -> {
+                            state.resetCodetoStart();
+                        });
+                        Main.ShowTimeoutAlert();
 
-                    resetCurrentTime();
+                        resetCurrentTime();
+                    }
+                }
+                try {
+                    thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
-        }, 0, 1000);
+        });
+
+        thread.start();
     }
 }
 

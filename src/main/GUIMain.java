@@ -144,6 +144,7 @@ public class GUIMain extends Application
          if(XMLManager.getBabysteps()) {
              timer = new TimeManager(stateManager, TimeLabel, this);
              timer.setStartTime(XMLManager.getBabystepsTime());
+             timer.runtime();
          }
 
          updatePhase();
@@ -177,7 +178,7 @@ public class GUIMain extends Application
                 if(timer != null)
                 {
                     timer.resetCurrentTime();
-                    timer.runtime();
+                    timer.Restart();
                 }
                 break;
             case "Green":
@@ -188,7 +189,7 @@ public class GUIMain extends Application
                 if(timer != null)
                 {
                     timer.resetCurrentTime();
-                    timer.runtime();
+                    timer.Restart();
                 }
                 break;
             case "Refactor":
@@ -359,6 +360,8 @@ public class GUIMain extends Application
                     alert.setTitle("Out of Time");
                     alert.setHeaderText("Deine Bearbeitungszeit ist abgelaufen!\nPhase zurück gesetzt!");
                     alert.showAndWait();
+
+                    updatePhase();
                 });
 
         timer.Pause();

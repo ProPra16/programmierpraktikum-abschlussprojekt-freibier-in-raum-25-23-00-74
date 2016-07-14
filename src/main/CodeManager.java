@@ -12,10 +12,12 @@ public class CodeManager {
 
     public void setCode(Code c){
         code= c;
+        codeOriginal = c;
     }
 
     public void setTest(Code test){
         this.test=test;
+        testOriginal = test;
 
     }
 
