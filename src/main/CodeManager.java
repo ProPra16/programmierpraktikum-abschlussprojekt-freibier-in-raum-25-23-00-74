@@ -5,12 +5,14 @@ public class CodeManager {
     private HashMap<String, Code> codeOriginal;
     private HashMap<String, String> test;
     private HashMap<String, String> testOriginal;
+    private HashMap<String, String> aktest;
 
     public CodeManager(){
         code = new HashMap<>();
         codeOriginal = new HashMap<>();
         test = new HashMap<>();
         testOriginal = new HashMap<>();
+        aktest = new HashMap<>();
     }
 
     public void addCode(Code c, String name){
@@ -20,6 +22,10 @@ public class CodeManager {
     public void addTest(String test, String name){
         this.test.put(name,test);
     }
+
+    public void addakTest(String test, String name) { this.aktest.put(name,test);}
+
+    public String getakTest(String name) { return aktest.get(name);}
 
     public Code getCode(String name){
         return code.get(name);
