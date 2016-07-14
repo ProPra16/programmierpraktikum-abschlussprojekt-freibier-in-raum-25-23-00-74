@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.event.*;
+import java.util.Optional;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
@@ -133,14 +134,11 @@ public class GUIMain extends Application
             stage.setTitle("ERROR");
 
          stage.setScene(scene);
-         /*stage.setMinWidth(800);
-         stage.setWidth(800);
-         stage.setMinHeight(600);
-         stage.setHeight(600);*/
-
          stage.setMaximized(true);
 
          stage.show();
+
+         ShowWelcomeFileSelection();
      }
 
      void initializeLogic()
@@ -328,6 +326,28 @@ public class GUIMain extends Application
             Platform.exit();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    void ShowWelcomeFileSelection()
+    {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Willkommen");
+        alert.setHeaderText("Willkommen zu TDDT. Möchten sie eine neue Aufgabe auswählen oder letztes Projekt laden?");
+
+        ButtonType New = new ButtonType("Neue Aufgabe");
+        ButtonType Load = new ButtonType("Laden");
+        ButtonType Cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(New, Load, Cancel);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == New){
+            // ... user chose "One"
+        } else if (result.get() == Load) {
+            // ... user chose "Two"
+        } else {
+            // ... user chose CANCEL or closed the dialog
         }
     }
 
