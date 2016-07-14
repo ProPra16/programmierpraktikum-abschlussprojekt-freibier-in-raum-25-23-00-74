@@ -4,11 +4,11 @@ import javafx.scene.control.TextArea;
 
 public class InterfaceManager 
 {
-	HashMap<String, TextArea> Code;
-	HashMap<String, TextArea> TestCode;
+	TextArea Code;
+	TextArea TestCode;
 	TextArea Console;
 	
-	public InterfaceManager(HashMap<String, TextArea> Code, HashMap<String, TextArea> TestCode, TextArea Console)
+	public InterfaceManager(TextArea Code, TextArea TestCode, TextArea Console)
 	{
 		this.Code = Code;
 		this.TestCode = TestCode;
@@ -16,46 +16,24 @@ public class InterfaceManager
 	}
 	
 	// Zugriff auf das Coding-Area
-	public String getCode(String dataName)
+	public String getCode()
 	{
-		return Code.get(dataName).getText();
+		return Code.getText();
 	}
 	
-	public void setCode(String dataName, String code)
-	{
-		Code.get(dataName).setText(code);
-	}
+	public void setCode(String code) { Code.setText(code); }
 	
 	// Zugriff auf das Test-Coding-Area
 	public String getTestCode(String dataName)
 	{
-		return TestCode.get(dataName).getText();
+		return TestCode.getText();
 	}
 	
-	public void setTestCode(String dataName, String code) { TestCode.get(dataName).setText(code); }
+	public void setTestCode(String dataName, String code) { TestCode.setText(code); }
 
-	// Entfernen von Datein
-	public void removeCode(String dataName)
-	{
-		if(Code.containsKey(dataName))
-			Code.remove(dataName);
-		else if(TestCode.containsKey(dataName))
-			TestCode.remove(dataName);
-	}
-	
 	// Zugriff auf die Console
 	public void writeToConsole(String message)
 	{
 		Console.appendText(message);
 	}
-
-     // Neue Datei mit einbinden
-     public void addTextArea(String name, TextArea item, boolean code)
-     {
-         if(code)
-             Code.put(name, item);
-         else
-             TestCode.put(name, item);
-     }
-	
 }
