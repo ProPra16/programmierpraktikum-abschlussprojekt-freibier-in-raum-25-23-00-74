@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.event.*;
+import java.util.Optional;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
@@ -26,6 +27,7 @@ public class GUIMain extends Application
     // Logik //
     InterfaceManager interfaceManager;
     StateManager stateManager;
+    String currentFile;
     //------
 
     // GUI //
@@ -129,14 +131,11 @@ public class GUIMain extends Application
             stage.setTitle("ERROR");
 
          stage.setScene(scene);
-         /*stage.setMinWidth(800);
-         stage.setWidth(800);
-         stage.setMinHeight(600);
-         stage.setHeight(600);*/
-
          stage.setMaximized(true);
 
          stage.show();
+
+         ShowWelcomeFileSelection();
      }
 
      void initializeLogic()
@@ -172,6 +171,7 @@ public class GUIMain extends Application
 
          Code firstC = new Code(XMLManager.getKlasse(), XMLManager.getAufgabenstellung(), XMLManager.getAufgabename());
          codes.add(firstC);
+         currentFile = firstC.dateiname;
 
          stateManager = new StateManager(codes, interfaceManager,false);
          updatePhase();
@@ -217,6 +217,12 @@ public class GUIMain extends Application
                 removeTab(((Tab)event.getSource()).getText());
             }
         });
+        item.setOnSelectionChanged(new EventHandler<Event>() {
+            @Override
+            public void handle(Event event) {
+                currentFile = ((Tab)event.getSource()).getText();
+            }
+        });
 
         if(code) {
             CodeTabPane.getTabs().add(item);
@@ -230,6 +236,8 @@ public class GUIMain extends Application
         interfaceManager.addTextArea(fileName, codePanel, code);
 
         TabCount++;
+
+        currentFile = fileName;
     }
 
     void updatePhase()
@@ -281,12 +289,30 @@ public class GUIMain extends Application
 
     void SaveMenuHandler()
     {
-        interfaceManager.writeToConsole("AAAAAAAAAAHHH");
+        try {
+            FileManager.safeFile(currentFile, interfaceManager.getCode(currentFile));
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }
     }
 
     void SaveAsMenuHandler()
     {
-        interfaceManager.writeToConsole("AAAAAAAAAAHHH");
+        // Dialog öffnen
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save XML-File");
+
+        // Extension filter
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        File file = fileChooser.showSaveDialog(mainStage);
+
+        try {
+            FileManager.safeFile(file.getName().toString().substring(0, file.getName().toString().indexOf(".")), interfaceManager.getCode(currentFile));
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }
     }
 
     void CloseMenuHandler()
@@ -296,6 +322,28 @@ public class GUIMain extends Application
             Platform.exit();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    void ShowWelcomeFileSelection()
+    {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Willkommen");
+        alert.setHeaderText("Willkommen zu TDDT. Möchten sie eine neue Aufgabe auswählen oder letztes Projekt laden?");
+
+        ButtonType New = new ButtonType("Neue Aufgabe");
+        ButtonType Load = new ButtonType("Laden");
+        ButtonType Cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(New, Load, Cancel);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == New){
+            // ... user chose "One"
+        } else if (result.get() == Load) {
+            // ... user chose "Two"
+        } else {
+            // ... user chose CANCEL or closed the dialog
         }
     }
 
