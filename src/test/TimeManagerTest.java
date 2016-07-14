@@ -28,16 +28,16 @@ public class TimeManagerTest {
 
     @Test
     public void setStartTimetest(){
-        statem = new StateManager(codes,im);
-        TimeManager2 manager = new TimeManager2(statem);
+        statem = new StateManager(codes,im,false);
+        TimeManager manager = new TimeManager(statem);
         manager.setStartTime(a);
         assertEquals(10,manager.getStartTime());
     }
 
     @Test
     public void runTimetest() throws InterruptedException {
-        state2 = new StateManager(codes,im);
-        TimeManager2 manager = new TimeManager2(state2);
+        state2 = new StateManager(codes,im,false);
+        TimeManager manager = new TimeManager(state2);
         manager.setStartTime(4);
         manager.runtime();
         assertEquals(0,manager.getCurrentTime());
@@ -45,16 +45,16 @@ public class TimeManagerTest {
 
     @Test
     public void zeroruntest() {
-        statem = new StateManager(codes,im);
-        TimeManager2 manager = new TimeManager2(statem);
+        statem = new StateManager(codes,im,false);
+        TimeManager manager = new TimeManager(statem);
         manager.setStartTime(0);
         assertEquals(true,manager.zeroValueCheck());
     }
 
     @Test
     public void runonesteptest() {
-        statem = new StateManager(codes,im);
-        TimeManager2 manager = new TimeManager2(statem);
+        statem = new StateManager(codes,im,false);
+        TimeManager manager = new TimeManager(statem);
         manager.setStartTime(3);
         manager.runOneStep();
         assertEquals(2,manager.getCurrentTime());
