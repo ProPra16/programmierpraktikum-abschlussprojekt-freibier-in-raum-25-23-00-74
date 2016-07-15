@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><aufgabe>
+    <aufgabename>Gcd</aufgabename>
+    <dateiname>Gcd</dateiname>
+    <aufgabenstellung>Das Programm liest zwei nicht-negative Integer Zahlen
+        von der Standardeingabe und schreibt dann den groessten gemeinsamen Teiler der
+        beiden Zahlen auf die Standardausgabe. Wenn mindestens eine der beiden Zahlen
+        negativ ist, soll das Programm ERROR ausgeben.
+
+        Schreiben Sie dazu eine statische Methode gcd, die zwei int Werte uebergeben
+        bekommt und den groessten gemeinsamen Teiler (ebenfalls ein int Wert) zurueckgibt.</aufgabenstellung>
+    <babysteps>false</babysteps>
+    <babystepstime>26</babystepstime>
+    <atdd>false</atdd>
+    <atddName>AkzeptanzTest</atddName>
+    <atddInhalt>
+    </atddInhalt>
+    <klassen>
+        <klasse>public class Gcd {
+                static int gcd(int a, int b) {
+                }
+            }
+        </klasse>
+    </klassen>
+    <testName>myTest</testName>
+    <test>
+        import org.junit.Test;
+        import static org.junit.Assert.*;
+
+        public class myTest {
+        @Test
+        public void firstTest(){
+            assertEquals(4, gcd(12, 16));
+            }
+        }
+    </test>
+</aufgabe>

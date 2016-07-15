@@ -54,7 +54,7 @@ public class GUIMain extends Application
     // Menu
     MenuBar MainMenu;
     Menu FileMenu;
-    MenuItem OpenMButton;
+    //MenuItem OpenMButton;
     MenuItem SaveMButton;
     MenuItem ExportMButton;
     MenuItem CloseMButton;
@@ -109,10 +109,10 @@ public class GUIMain extends Application
 
          MainMenu = (MenuBar)scene.lookup("#MenuBar");
          FileMenu = MainMenu.getMenus().get(0);
-         OpenMButton = FileMenu.getItems().get(0);
-         SaveMButton = FileMenu.getItems().get(1);
-         ExportMButton = FileMenu.getItems().get(2);
-         CloseMButton = FileMenu.getItems().get(3);
+         //OpenMButton = FileMenu.getItems().get(0);
+         SaveMButton = FileMenu.getItems().get(0);
+         ExportMButton = FileMenu.getItems().get(1);
+         CloseMButton = FileMenu.getItems().get(2);
          //--------------------------------
 
          // GUI-Elemente finalisieren
@@ -172,7 +172,7 @@ public class GUIMain extends Application
         BackButton.setOnAction(new EventHandler<ActionEvent>() { @Override public void handle(ActionEvent e) { backStep(); } });
 
         // Menu //
-        OpenMButton.setOnAction(new EventHandler<ActionEvent>() { @Override public void handle(ActionEvent e) { OpenMenuHandler(); } });
+        //OpenMButton.setOnAction(new EventHandler<ActionEvent>() { @Override public void handle(ActionEvent e) { OpenMenuHandler(); } });
 
         SaveMButton.setOnAction(new EventHandler<ActionEvent>() { @Override public void handle(ActionEvent e) { SaveMenuHandler(); } });
 
@@ -238,7 +238,7 @@ public class GUIMain extends Application
         {
             alert =  new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Test failed");
-            alert.setContentText("Tests sind nicht compiliert oder es schlägt mindestens ein Test fehl.\nBitte Tests überprüfen");
+            alert.setContentText("Es muss genau einen Test geben der fehlschlägt!");
         }
         else if(currentState.equals(stateManager.getCurrentState()) && currentState.equals("Green"))
         {
@@ -250,7 +250,7 @@ public class GUIMain extends Application
         {
             alert =  new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Fortschritt");
-            alert.setContentText("Tests sind compiliert und genau einer schlägt fehl.\nBitte diesen Tests erfüllen");
+            alert.setContentText("Es gibt genau einen Test der fehlschlägt.\nBitte diesen Tests erfüllen");
         }
         else if(stateManager.getCurrentState().equals("Red") && currentState.equals("Green"))
         {

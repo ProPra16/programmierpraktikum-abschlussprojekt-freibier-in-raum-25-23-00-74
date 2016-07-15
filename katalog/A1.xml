@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><aufgabe>
+    <aufgabename>Cosinus</aufgabename>
+    <dateiname>Cosinus</dateiname>
+    <aufgabenstellung>Schreiben sie eine Funktion die Näherungsweise Cosinus berechnet. Eingabe der Werte über die Kommandozeile.</aufgabenstellung>
+    <babysteps>true</babysteps>
+    <babystepstime>90</babystepstime>
+    <atdd>false</atdd>
+    <atddName>AkzeptanzTest</atddName>
+    <atddInhalt>
+    </atddInhalt>
+    <klassen>
+        <klasse>public class Cosinus {
+            public static void main(String[] args) {
+                }
+            }
+        </klasse>
+    </klassen>
+    <testName>myTest</testName>
+    <test>
+        import org.junit.Test;
+        import static org.junit.Assert.*;
+
+        public class myTest {
+        @Test
+        public void firstTest(){
+            }
+        }
+    </test>
+</aufgabe>
