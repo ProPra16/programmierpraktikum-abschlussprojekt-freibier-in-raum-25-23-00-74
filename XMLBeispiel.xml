@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><aufgabe>
+    <aufgabename>Romische Zahlen</aufgabename>
+    <dateiname>RomanNumberConverter</dateiname>
+    <aufgabenstellung>Konvertiert arabische in romische Zahlen.</aufgabenstellung>
+    <babysteps>false</babysteps>
+    <babystepstime>26</babystepstime>
+    <atdd>true</atdd>
+    <atddName>AkzeptanzTest</atddName>
+    <atddInhalt>
+        import org.junit.Test;
+        import static org.junit.Assert.*;
+
+        public class AkzeptanzTest {
+        @Test
+        public void attdTest(){
+        assertEquals(true, false);
+        }
+        }
+    </atddInhalt>
+    <klassen>
+        <klasse>public class RomanNumberConverter {
+            }
+        </klasse>
+    </klassen>
+    <testName>myTest</testName>
+    <test>
+        import org.junit.Test;
+        import static org.junit.Assert.*;
+
+        public class myTest {
+        @Test
+        public void firstTest(){
+        assertEquals(true, true);
+        }
+        }
+    </test>
+</aufgabe>
