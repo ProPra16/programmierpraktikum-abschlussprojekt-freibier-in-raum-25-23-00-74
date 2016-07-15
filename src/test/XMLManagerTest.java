@@ -40,8 +40,7 @@ public class XMLManagerTest {
     @Test
     public void testGetKlasse() throws Exception {
         XMLManager.XMLManager(new File(getClass().getResource("/XMLAufgabe.xml").toURI()).getAbsolutePath());
-        assertEquals("\n" +
-                "            public class RomanNumberConverter {\n" +
+        assertEquals("public class RomanNumberConverter {\n" +
                 "            }\n" +
                 "        ",XMLManager.getKlasse());
     }
