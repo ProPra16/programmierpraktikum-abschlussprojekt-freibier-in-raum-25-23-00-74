@@ -24,12 +24,4 @@ public class FileManagerTest {
                 "        ",XMLManager.getKlasse());
 
     }
-    @Test
-    public void speichereKlasse() throws Exception {
-        FileManager.speichereJava("public class RomanNumberConverter {\n" +
-                "            }\n" +
-                "        ", "javaTestFile");
-    }
-
-
 }
