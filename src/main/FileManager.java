@@ -25,7 +25,7 @@ import javax.xml.transform.stream.StreamResult;
 
 public class FileManager {
     static File f = new File(
-            "src/main/");
+            "");
     static File[] aufgabenArray = f.listFiles();/* Ein Array aller Dateien im Verzeichnis */
 
     public static List<String> aufgaben(File[] aufgabenArray){
@@ -40,7 +40,7 @@ public class FileManager {
         DocumentBuilderFactory aufgabeXML = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder XMLLesen = aufgabeXML.newDocumentBuilder();
-            Document document = XMLLesen.parse((XMLManager.class.getResource("/"+dateiname+".xml").toString()));
+            Document document = XMLLesen.parse(dateiname);
 
             NodeList rootNodes = document.getElementsByTagName("aufgabe");
             Node aufgabe = rootNodes.item(0);
@@ -94,13 +94,13 @@ public class FileManager {
 
     public static void safeFile(String dateiname, String inhalt, String tests, String attdInhalt)throws ParserConfigurationException{
         changeNodeValue("klasse",inhalt,dateiname);
-        changeNodeValue("tests",tests,dateiname);
-        changeNodeValue("attdInhalt", attdInhalt, dateiname);
+        changeNodeValue("test",tests,dateiname);
+        changeNodeValue("atddInhalt", attdInhalt, dateiname);
     }
 
-    public static void safeFileOhneAttd(String dateiname, String inhalt, String tests)throws ParserConfigurationException{
+    public static void safeFile(String dateiname, String inhalt, String tests)throws ParserConfigurationException{
         changeNodeValue("klasse",inhalt,dateiname);
-        changeNodeValue("tests",tests,dateiname);
+        changeNodeValue("test",tests,dateiname);
     }
 
     private static void writeToFile(String dateiname, Document document) throws ParserConfigurationException{
@@ -109,16 +109,14 @@ public class FileManager {
             TransformerFactory factory = TransformerFactory.newInstance();
             Transformer transformer = factory.newTransformer();
             DOMSource src = new DOMSource(document);
-            StreamResult fileResult = new StreamResult(
-                    ((XMLManager.class.getResource("/"+dateiname+".xml").toString())));
+            StreamResult fileResult = new StreamResult(dateiname);
             transformer.transform(src, fileResult);
         }catch(TransformerException e){
             e.printStackTrace();
         }
     }
-    public static void speichereJava(String inhalt, String dateiname){
+    public static void speichereJava(String inhalt, File javaFile){
         try {
-            File javaFile = new File(dateiname + ".java");
             FileWriter writer = new FileWriter(javaFile);
             PrintWriter printer = new PrintWriter(writer);
 

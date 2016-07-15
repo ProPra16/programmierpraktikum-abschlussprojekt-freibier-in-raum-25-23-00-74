@@ -53,6 +53,6 @@
       <TextArea fx:id="CodePane" GridPane.rowIndex="2" />
       <TextArea fx:id="TestPane" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <Label fx:id="CodeLabel" text="Label" GridPane.rowIndex="1" />
-      <Label fx:id="TestLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <Label fx:id="TestLabel" text="Tests" GridPane.columnIndex="1" GridPane.rowIndex="1" />
    </children>
 </GridPane>

@@ -34,7 +34,7 @@ public class StateManager {
             im.setTestCode(tests.getKlasse());
     }
 
-    private void update(boolean updateATTD){
+    void update(boolean updateATTD){
         //Update Code
         cm.updateCode(im.getCode());
         //Update Tests
@@ -133,7 +133,9 @@ public class StateManager {
         update(true);
             RealCompileManager compiler = new RealCompileManager(cm.getCode(),cm.getakTest().getDateiname(),cm.getakTest().getKlasse());
             compiler.runCompiler();
-            if(!compiler.compiles()){
+            boolean tests = false;
+            if(compiler.compiles()) tests = compiler.getNumberOfFailedTests()==1;
+            if(!compiler.compiles()||tests){
                     currentState="Red";
                     printToGUI(cm.getCode(),cm.getTest());
                 }
@@ -141,5 +143,10 @@ public class StateManager {
 
     public String getCurrentState(){
         return currentState;
+    }
+
+    public Code getAkTest()
+    {
+        return cm.getakTest();
     }
 }

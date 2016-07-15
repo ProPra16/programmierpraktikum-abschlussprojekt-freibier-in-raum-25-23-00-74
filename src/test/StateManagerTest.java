@@ -13,14 +13,14 @@ public class StateManagerTest {
     static InterfaceManager im;
     @BeforeClass
     public static void setup(){
-        code = new Code("public static void main(String[] args){\n\n}","Testaufgabenstellung","Aufgabe1");
+        code = new Code("public static void main(String[] args){\n\n}","","Aufgabe1");
         im = mock(InterfaceManager.class);
     }
 
     @Test
     public void constructor(){
         sm = new StateManager(code,new Code("","","Tests"),im);
-        verify(im).setCode("public static void main(String[] args){\n\n}");
+        verify(im).setCode("/* */\n\n" +"public static void main(String[] args){\n\n}");
     }
 
     @Test

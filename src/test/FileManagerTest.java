@@ -1,5 +1,7 @@
 import org.junit.Test;
 
+import java.io.File;
+
 import static org.junit.Assert.*;
 
 /**
@@ -13,7 +15,7 @@ public class FileManagerTest {
 
     @Test
     public void openFile() throws Exception {
-        FileManager.openFile("FileManagerTest");
+        FileManager.openFile(new File(getClass().getResource("/FileManagerTest.xml").toURI()).getAbsolutePath());
         assertEquals("Romische Zahlen",XMLManager.getAufgabename());
         assertEquals("Konvertiert arabische in romische Zahlen.",XMLManager.getAufgabenstellung());
         assertEquals("\n" +

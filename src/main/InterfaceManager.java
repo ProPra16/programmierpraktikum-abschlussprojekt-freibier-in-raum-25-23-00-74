@@ -18,7 +18,8 @@ public class InterfaceManager
 	// Zugriff auf das Coding-Area
 	public String getCode()
 	{
-		return Code.getText();
+		String c = Code.getText();
+		return c.substring(c.indexOf("public class"));
 	}
 	
 	public void setCode(String code) { Code.setText(code); }

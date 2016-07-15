@@ -23,6 +23,7 @@ public class GUIMain extends Application
     InterfaceManager interfaceManager;
     StateManager stateManager;
     String currentFile;
+    String filePath;
     TimeManager timer;
     boolean attd;
     //------
@@ -319,6 +320,7 @@ public class GUIMain extends Application
         {
             // Datei öffnen
             FileManager.openFile(file.getAbsolutePath());
+            filePath = file.getAbsolutePath();
 
             // TA init
             currentFile = XMLManager.getAufgabename();
@@ -333,7 +335,11 @@ public class GUIMain extends Application
     void SaveMenuHandler()
     {
         try {
-            FileManager.safeFile(currentFile, interfaceManager.getCode(), interfaceManager.getTestCode(), "");
+            stateManager.update(stateManager.currentState.equalsIgnoreCase("ATDD"));
+            if(attd)
+                FileManager.safeFile(filePath, interfaceManager.getCode(), stateManager.cm.getTest().getKlasse(), stateManager.getAkTest().getKlasse());
+            else
+                FileManager.safeFile(filePath, interfaceManager.getCode(), interfaceManager.getTestCode());
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         }
@@ -350,12 +356,9 @@ public class GUIMain extends Application
         fileChooser.getExtensionFilters().add(extFilter);
 
         File file = fileChooser.showSaveDialog(mainStage);
-
-        try {
-            FileManager.safeFile(file.getName().toString().substring(0, file.getName().toString().indexOf(".")), interfaceManager.getCode(), interfaceManager.getTestCode(), "");
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        }
+        
+            FileManager.speichereJava(interfaceManager.getCode(), file);
+            //FileManager.safeFile(file.getName().toString().substring(0, file.getName().toString().indexOf(".")), interfaceManager.getCode(), interfaceManager.getTestCode(), "");
     }
 
     void CloseMenuHandler()
