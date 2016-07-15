@@ -24,6 +24,7 @@ public class GUIMain extends Application
     StateManager stateManager;
     String currentFile;
     TimeManager timer;
+    boolean attd;
     //------
 
     // GUI //
@@ -51,7 +52,7 @@ public class GUIMain extends Application
     //----------
 
     // Phasen-Bilder
-    Image _CodePhase, _RefPhase, _TestPhase;
+    Image _CodePhase, _RefPhase, _TestPhase, _ATDDPhase;
 
 	 public static void main(String[] args)
 	 {
@@ -84,6 +85,7 @@ public class GUIMain extends Application
          _CodePhase = new Image(getClass().getResource("/_CodePhase.png").toString());
          _TestPhase = new Image(getClass().getResource("/_TestPhase.png").toString());
          _RefPhase = new Image(getClass().getResource("/_RefPhase.png").toString());
+         _ATDDPhase = new Image(getClass().getResource("/_ATDDPhase.png").toString());
 
          // GUI-Elemente aus der fxml filtern
          CodeLabel = (Label) scene.lookup("#CodeLabel");
@@ -116,7 +118,7 @@ public class GUIMain extends Application
          //--------------------------
 
          // Show Scene
-         stage.setTitle("ERROR");
+         stage.setTitle("TDDT");
 
          stage.setScene(scene);
          stage.setMaximized(true);
@@ -136,8 +138,6 @@ public class GUIMain extends Application
          String s =  XMLManager.getTestName();
          Code firstT = new Code(XMLManager.getTest(), "", XMLManager.getTestName());
 
-         // Datei öffnen
-         //FileManager.openFile(file.getName().toString().substring(0, file.getName().toString().indexOf(".")));
 
          stateManager = new StateManager(firstC, firstT, interfaceManager);
 
@@ -145,6 +145,12 @@ public class GUIMain extends Application
              timer = new TimeManager(stateManager, TimeLabel, this);
              timer.setStartTime(XMLManager.getBabystepsTime());
              timer.runtime();
+         }
+         else if(XMLManager.getAttd())
+         {
+             attd = true;
+             stateManager = new StateManager(firstC, firstT, new Code(XMLManager.getAttdInhalt(), "", XMLManager.getAttdName()), interfaceManager);
+
          }
 
          updatePhase();
@@ -200,6 +206,12 @@ public class GUIMain extends Application
                 if(timer != null)
                     timer.Pause();
                 break;
+            case "ATDD":
+                PhaseView.setImage(_ATDDPhase );
+                CodePane.setEditable(false);
+                TestPane.setEditable(true);
+                BackButton.setDisable(true);
+                break;
         }
     }
 
@@ -251,10 +263,36 @@ public class GUIMain extends Application
         }
         else if(stateManager.getCurrentState().equals("Red") && currentState.equals("Refactor"))
         {
-            alert =  new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Fortschritt");
-            alert.setContentText("Tests wurden erfüllt.\nBitte neuen fehlschlagenden Test schreiben!");
+            if(!attd) {
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Fortschritt");
+                alert.setContentText("Tests wurden erfüllt.\nBitte neuen fehlschlagenden Test schreiben!");
+            }
+            else {
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("ATDD");
+                alert.setContentText("Akzeptanztest funktioniert noch nicht. Aber das ist ok.");
+            }
         }
+        else if(currentState.equals(stateManager.getCurrentState()) && currentState.equals("ATDD"))
+        {
+            alert =  new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ATDD-Test");
+            alert.setContentText("Der Akzeptanz-Test schlägt nicht fehl.\nBitte Test überprüfen");
+        }
+        else if(stateManager.getCurrentState().equals("ATDD") && currentState.equals("Refactor"))
+        {
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Fortschritt");
+                alert.setContentText("Akzeptanz-Test wurde erfüllt.\nBitte neuen fehlschlagenden Akzeptanz-Test schreiben!");
+        }
+        else if(stateManager.getCurrentState().equals("Red") && currentState.equals("ATDD"))
+        {
+            alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Fortschritt");
+            alert.setContentText("Guter Akzeptanz-Test geschrieben.");
+        }
+
         alert.showAndWait();
         updatePhase();
     }
@@ -336,19 +374,16 @@ public class GUIMain extends Application
         alert.setTitle("Willkommen");
         alert.setHeaderText("Willkommen zu TDDT. Möchten sie eine neue Aufgabe auswählen oder letztes Projekt laden?");
 
-        ButtonType New = new ButtonType("Neue Aufgabe");
         ButtonType Load = new ButtonType("Laden");
         ButtonType Cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
 
-        alert.getButtonTypes().setAll(New, Load, Cancel);
+        alert.getButtonTypes().setAll(Load, Cancel);
 
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == New){
-            OpenMenuHandler();
-        } else if (result.get() == Load) {
+        if (result.get() == Load) {
             OpenMenuHandler();
         } else {
-            // ... user chose CANCEL or closed the dialog
+            CloseMenuHandler();
         }
     }
 

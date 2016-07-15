@@ -4,8 +4,19 @@
     <aufgabenstellung>Konvertiert arabische in römische Zahlen.</aufgabenstellung>
     <babysteps>false</babysteps>
     <babystepstime>26</babystepstime>
-    <attd>true</attd>
-    <attdInhalt></attdInhalt>
+    <atdd>true</atdd>
+    <atddName>AkzeptanzTest</atddName>
+    <atddInhalt>
+        import org.junit.Test;
+        import static org.junit.Assert.*;
+
+        public class AkzeptanzTest {
+        @Test
+        public void attdTest(){
+        assertEquals(true, true);
+        }
+        }
+    </atddInhalt>
     <klassen>
         <klasse>
             public class RomanNumberConverter {

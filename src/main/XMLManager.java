@@ -22,8 +22,9 @@ public class XMLManager {
     static String klasse = "";
     static String babysteps = "";
     static int babystepsTime;
-    static String attd = "";
-    static String attdInhalt = "";
+    static String atdd = "";
+    static String atddName = "";
+    static String atddInhalt = "";
     static String dateiname = "";
     static String testName = "";
     static String test = "";
@@ -51,9 +52,13 @@ public class XMLManager {
             Element babystepsTimeElement = (Element) babystepsTimeNode;
             babystepsTime = Integer.parseInt(babystepsTimeElement.getTextContent());
 
-            Node attdNode = noteElement.getElementsByTagName("attd").item(0);
-            Element attdElement = (Element) attdNode;
-            attd = attdElement.getTextContent();
+            Node atddNode = noteElement.getElementsByTagName("atdd").item(0);
+            Element atddElement = (Element) atddNode;
+            atdd = atddElement.getTextContent();
+
+            Node atddNameNode = noteElement.getElementsByTagName("atddName").item(0);
+            Element atddNameElement = (Element) atddNameNode;
+            atddName = atddNameElement.getTextContent();
 
             Node testNameNode = noteElement.getElementsByTagName("testName").item(0);
             Element testNameElement = (Element) testNameNode;
@@ -63,9 +68,9 @@ public class XMLManager {
             Element testElement = (Element) testNode;
             test = testElement.getTextContent();
 
-            Node attdInhaltNode = noteElement.getElementsByTagName("attdInhalt").item(0);
-            Element attdInhaltElement = (Element) attdInhaltNode;
-            aufgabenstellung = attdInhaltElement.getTextContent();
+            Node atddInhaltNode = noteElement.getElementsByTagName("atddInhalt").item(0);
+            Element atddInhaltElement = (Element) atddInhaltNode;
+            atddInhalt = atddInhaltElement.getTextContent();
 
             Node aufgabenameNode = noteElement.getElementsByTagName("aufgabename").item(0);
             Element aufgabenameElemet = (Element) aufgabenameNode;
@@ -115,11 +120,12 @@ public class XMLManager {
         return babystepsTime;
     }
     public static boolean getAttd(){
-        if(attd.equals("true")){return true;}
+        if(atdd.equals("true")){return true;}
         return false;
     }
+    public static String getAttdName() {return atddName;}
     public static String getAttdInhalt(){
-        return attdInhalt;
+        return atddInhalt;
     }
     public static String getDateiname(){
         return dateiname;

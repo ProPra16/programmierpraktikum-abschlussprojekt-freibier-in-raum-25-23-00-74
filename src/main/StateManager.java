@@ -7,7 +7,7 @@ public class StateManager {
     InterfaceManager im;
     String currentState;
     boolean isgoingbackwardallwed = false;
-    boolean attd;
+    boolean atdd;
 
     public StateManager(Code code, Code test, Code akTest, InterfaceManager im){
         this.im=im;
@@ -17,6 +17,7 @@ public class StateManager {
         cm.setakTest(akTest);
         printToGUI(code,akTest);
         currentState = "ATDD";
+        atdd = true;
     }
 
     public StateManager(Code code, Code test, InterfaceManager im){
@@ -29,7 +30,7 @@ public class StateManager {
     }
 
     private void printToGUI(Code code, Code tests){
-            im.setCode(code.getKlasse());
+            im.setCode("/* " + code.getAufgabenstellung() +"*/\n\n" +  code.getKlasse());
             im.setTestCode(tests.getKlasse());
     }
 
@@ -111,7 +112,7 @@ public class StateManager {
             if(currentState.equalsIgnoreCase("green")){
                 currentState = "Refactor";
             }
-            else if(currentState.equalsIgnoreCase("refactor")&&attd){
+            else if(currentState.equalsIgnoreCase("refactor")&&atdd){
                 currentState = "ATDD";
                 printToGUI(cm.getCode(),cm.getakTest());
                 fromATTDtoRed();
@@ -122,12 +123,9 @@ public class StateManager {
             }
         }
         else{
-            System.out.printf(" >>> " + compiler.getCompileErrors());
             im.writeToConsole(compiler.getCompileErrors());
             if(compiler.compiles())
                 im.writeToConsole(compiler.getTestErrors());
-
-            System.out.printf("");
         }
     }
 
@@ -135,18 +133,11 @@ public class StateManager {
         update(true);
             RealCompileManager compiler = new RealCompileManager(cm.getCode(),cm.getakTest().getDateiname(),cm.getakTest().getKlasse());
             compiler.runCompiler();
-        System.out.println(compiler.getCompileErrors());
-            if(compiler.compiles()){
-                if(compiler.getNumberOfFailedTests()==1){
+            if(!compiler.compiles()){
                     currentState="Red";
                     printToGUI(cm.getCode(),cm.getTest());
                 }
-                else{
-                    im.writeToConsole(compiler.getCompileErrors());
-                    im.writeToConsole(compiler.getTestErrors());
-            }
         }
-    }
 
     public String getCurrentState(){
         return currentState;
