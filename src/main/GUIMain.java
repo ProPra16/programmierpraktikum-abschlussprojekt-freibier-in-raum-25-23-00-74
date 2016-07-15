@@ -1,8 +1,8 @@
 import javafx.application.Application;
 import  javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.stage.FileChooser;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
